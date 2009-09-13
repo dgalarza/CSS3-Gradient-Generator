@@ -1,9 +1,19 @@
 /**
 * CSS3 Webkit Gradient Generator
 *
+* This script handles all the functionality found on the CSS3 Webkit Gradient Generator.
+* The gradient generator is a showcase of webkit CSS gradients and provides a simple 
+* GUI for a user to create a webkit gradient that can then be used anywhere an image 
+* could be use in CSS.
+*
+* The generator is intended to be viewed in a webkit browser in order to get all 
+* the features, such as the live gradient sampling. Non-webkit browsers will be able to generate
+* the webkit code, but will not be able to view a live sample.
+*
 * @author dgalarza - Damian Galarza
-* Release under the MIT License:
+* Released under the MIT License:
 * http://www.opensource.org/licenses/mit-license.php
+* http://gradients.glrzad.com/
 */
 
 (function () {
@@ -11,7 +21,7 @@
 	var generator = {
 		
 		/**
-		* Hold our gradient properties here
+		* Hold our gradient properties here, setup default values
 		*/
 		gradientProps : {
 			'type' : 'linear',
@@ -63,6 +73,7 @@
 				
 		/**
 		* Retrieves the color sent from ColorPicker plugin
+		* and set's the swatch's color accordingly
 		*/
 		retrieveColor : function (hsb, hex, rgb) {
 			var color = hex;
@@ -78,7 +89,9 @@
 		},
 		
 		/**
-		* Set's the gradient on our sample
+		* Run's through the gradient's properties and applies
+		* the gradient to our live button sample
+		*
 		*/
 		setGradient : function () {
 			var gradientProps = generator.gradientProps;
@@ -113,7 +126,7 @@
 		
 		/**
 		* Generates a webkit gradient string for the user
-		* based of the colors selected
+		* and display it on the page so the user can then take their gradient string and use it
 		*/
 		updateGradientString : function () {
 			var gString = generator.gradientString;
@@ -145,7 +158,7 @@
 		},
 		
 		/**
-		* Simulate creating a CSS property
+		* Return a text node for our CSS code generation
 		*
 		* @param {String} | Content for CSS prop definition
 		* @param {String} | (Optional) Property seperator
@@ -162,6 +175,8 @@
 		
 		/**
 		* Gradient direction select change handler
+		* Handles the Custom option as well as updates
+		* the live sample and CSS once the user makes a change
 		*/
 		selectChange : function(e) {
 			e.preventDefault();
@@ -193,8 +208,8 @@
 		},
 		
 		/**
-		* 
-		*
+		* Handle the input of data in a custom gradient
+		* direction text box.
 		*/
 		selectCustomChange : function(e) {
 			e.preventDefault();
@@ -213,7 +228,9 @@
 	};
 	
 	/**
-	* Handles all color swatch related activity
+	* Handles all color swatch related activity such as creating and
+	* intializing a swatch and its components such as the slider and
+	* remove trigger.
 	*/
 	var swatch = {
 		
@@ -244,7 +261,8 @@
 		},
 		
 		/**
-		* Create a new color swatch
+		* Create a new color swatch on the page and in the array
+		* Once the swatch is set up, we will set up its functionality
 		*/
 		createSwatch : function () {
 			var $newSwatch = $('#swatch-template').clone(true);
@@ -272,9 +290,12 @@
 		},
 		
 		/**
-		* Takes a swatch ID element and set's it up 
+		* Takes a swatch ID element and set's it up including
+		* setting up the swatche's start color, position, the slider
+		* associated with the swatch, etc.
 		* 
 		* @param {String} | Element ID
+		* @param {Object} | Configuration parameters for the object (Color and position)
 		*/
 		setupSwatch : function (element, config) {
 			var config = config || {'color' : '000000', 'position' : 0};
@@ -313,7 +334,10 @@
 		},
 		
 		/**
-		* Removes a swatch from the page, trigger click handler
+		* Click handler for the remove swatch trigger. This removes the swatch
+		* from the page as well as its entry in the gradients array.
+		*
+		* Once it is removed, the gradient sample is updated to show this.
 		*/
 		removeSwatch : function(e) {
 			e.preventDefault();
@@ -345,7 +369,8 @@
 		},
 		
 		/**
-		* Handle a swatch click
+		* Handle a swatch click, setting it as the current swatch,
+		* allowing the user to edit it.
 		*/
 		swatchClick : function (e) {
 			e.preventDefault();
@@ -376,7 +401,10 @@
 		},
 		
 		/**
-		* Handle the gradient position slider change
+		* Handle the gradient position slider change, updating the 
+		* position of the color in the gradient live, while the user
+		* adjusts the slider.
+		*
 		*/
 		slideChange : function (e, ui) {			
 			var slider = e.target;
@@ -400,7 +428,9 @@
 		},
 		
 		/**
-		* Handle keyup detection for slider input field
+		* Handle keyup detection for slider input field so that we can
+		* update the live gradient sample and CSS code sample as soon
+		* as the user alters the data.
 		*/
 		slideInputUpdate : function (e) {
 			e.preventDefault();
@@ -429,7 +459,9 @@
 		},
 		
 		/**
-		* Find swatch in array
+		* Find swatch in array based of the swatch's ID
+		*
+		* @param {String} | Swatch ID
 		*/
 		findSwatch : function (swatchName) {
 			var swatches = generator.gradientProps.gradients;
