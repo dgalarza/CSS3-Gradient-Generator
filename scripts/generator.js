@@ -14,7 +14,7 @@
 			'type' : 'linear',
 			'dStart' : 'left bottom',
 			'dEnd' : 'left top',
-			gradients : {}
+			gradients : []
 		},
 		
 		swatchCount : 0,
@@ -34,12 +34,6 @@
 			.mouseup(generator.updateGradientString);
 						
 			generator.currentSwatch = $('#swatch-1');
-			
-			//Setup generate CSS link click handler
-			$('#generate-trigger').click(function(e) {
-				e.preventDefault();
-				generator.updateGradientString();
-			});
 		},
 				
 		/**
@@ -51,7 +45,10 @@
 			var pName = $(cPicker).attr('id');
 			var swatch = $(cPicker).find('.swatch-color');
 			
-			generator.gradientProps.gradients[pName].color = color;
+			console.log(pName);
+			var gradient = swatch.findSwatch(pName);
+			gradient.color = color;
+			
 			$(swatch).css('background-color', '#' + color);
 			generator.setGradient();
 		},
@@ -136,11 +133,14 @@
 			
 			//Set up the click handler for add swatch
 			$('#add-swatch').click(function(e){
+				e.preventDefault();
 				swatch.createSwatch();
 			});
 			
 			//Set up JQuery live click handler for remove swatch triggers
 			$('.remove-trigger').live('click', swatch.removeSwatch);
+			
+			console.log(generator.gradientProps.gradients);
 		},
 		
 		/**
@@ -170,12 +170,14 @@
 			var $_thisSwatch = $('#' + element);
 			$_thisSwatch.click(swatch.swatchClick);
 			generator.swatchCount++;
-			
-			generator.gradientProps.gradients[element] = {
+					
+			var tmpGradient = {
 				'color' : 'bd1746',
 				'id' : element,
 				'position' : 0
 			};
+			
+			generator.gradientProps.gradients.push(tmpGradient);
 			
 			$_thisSwatch.find('.swatch-slider').slider({
 				change : swatch.slideChange,
@@ -189,34 +191,49 @@
 		* Removes a swatch from the page, trigger click handler
 		*/
 		removeSwatch : function(e) {
-			var target = e.target;
-			var rel = target.rel;
+			e.preventDefault();
 			
-			delete generator.gradientProps.gradients[rel];
-			target = $(target).parent();
-			$(target).remove();
-			
-			generator.setGradient();
-			generator.updateGradientString();
+			if(confirm('Are you sure you want to remove this color swatch?') ){
+				var target = e.target;
+				var rel = target.rel;
+
+				delete generator.gradientProps.gradients[rel];
+				target = $(target).parent();
+				$(target).remove();
+
+				generator.setGradient();
+				generator.updateGradientString();
+			}
 		},
 		
 		/**
 		* Handle a swatch click
 		*/
 		swatchClick : function (e) {
-			var target = e.target;
-			
 			e.preventDefault();
-			generator.currentSwatch = $(target).parent();
 			
+			//Find the main swatch container always
+			var target = e.target;
+			if( !$(target).hasClass('swatch')) {
+				while(!$(target).hasClass('swatch')) {
+					target = $(target).parent();
+				}
+			}
+			
+			//Identify the clicked swatch as the current swatch	
+			generator.currentSwatch = $(target);
+			
+			//Remove active swatch status from other swatch
 			swatch.container.find('.selected-swatch').removeClass('selected-swatch');
 			swatch.container.find('.swatch-slider').slider('disable');
-	
-			$(target).parent()
+			
+			//Set up selected state for our clicked swatch
+			$(target)
 				.addClass('selected-swatch')
 				.find('.swatch-slider').slider('enable');
 			
-			var color = generator.gradientProps.gradients[generator.currentSwatch.attr('id')].color;
+			var gradient = swatch.findSwatch(generator.currentSwatch.attr('id'))
+			var color = gradient.color;
 			generator.picker.ColorPickerSetColor(color);
 		},
 		
@@ -228,8 +245,23 @@
 			target = $(target).parent();
 			var id = $(target).attr('id');
 			
-			generator.gradientProps.gradients[id]['position'] = ui.value;
+			var gradient = swatch.findSwatch(id);
+			gradient['position'] = ui.value;
 			generator.setGradient();
+		},
+		
+		/**
+		* Find swatch in array
+		*/
+		findSwatch : function (swatchName) {
+			var swatches = generator.gradientProps.gradients;
+			
+			for(var i=0; i<swatches.length; i++) {
+				var cSwatch  = swatches[i];
+				if(cSwatch.id === swatchName) return cSwatch;
+			}
+			
+			return false;
 		}
 	};
 	

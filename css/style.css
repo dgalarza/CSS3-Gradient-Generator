@@ -55,6 +55,10 @@ h3 { font-size: 22px; }
 	float: left;
 	clear: both;
 	margin-top: 10px;
+	padding: 10px;
+	border: 1px solid #CCCCCC;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
 }
 
 .swatch .swatch-color {
@@ -82,8 +86,20 @@ h3 { font-size: 22px; }
 	width: 200px;
 	height: 10px;
 	margin-top: 7px;
-	background-color: #1e1e1e;
 	float: left;
+}
+
+.swatch .slider-input {
+	margin-top: 5px;
+	float: right;
+	clear: both;
+}
+.swatch .slider-input input{
+	width: 25px;
+}
+
+.swatch.selected-swatch {
+	background-color: #D3D3D3;
 }
 
 .swatch.selected-swatch .swatch-color{
@@ -129,7 +145,7 @@ h3 { font-size: 22px; }
 	font-size: 11px;
 	background: url(/images/icons/add.png) no-repeat 0 8px;
 	text-indent: -9999px;
-	overflow: none;
+	overflow: hidden;
 	display: block;
 	float: left;
 }
