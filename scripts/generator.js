@@ -61,7 +61,7 @@
 				flat: true,
 				onChange : generator.retrieveColor,
 			})
-			.ColorPickerSetColor('#bd1746')
+			.ColorPickerSetColor('#23adad')
 			.mouseup(generator.updateGradientString);
 			
 			//Set up our direction select options
