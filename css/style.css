@@ -10,6 +10,7 @@ a,a:visited { color: #68C2FF; text-decoration: none; }
 h1 { font-size: 30px; color: #68C2FF; }
 h2 { font-size: 26px; }
 h3 { font-size: 22px; }
+h4 { font-size: 16px; margin-bottom: 10px; }
 
 #page-wrapper {
 	width: 950px;
@@ -35,10 +36,28 @@ h3 { font-size: 22px; }
 	margin-top: 10px;
 }
 
-#instructions {
+#info-panel {
 	margin: 0 10px 30px 10px;
 	padding-bottom: 50px;
 	border-bottom: 2px solid #1E1E1E;
+	float: left;
+}
+
+#instructions {
+	width: 45%;
+	float: left;
+}
+
+#instructions p + p {
+	margin-top: 20px;
+}
+
+.notes-section {
+	margin-top: 20px;
+}
+
+.notes-section ul {
+	margin: 10px 0 0 15px;
 }
 
 #color-swatches {
@@ -48,7 +67,6 @@ h3 { font-size: 22px; }
 
 #picker-container{
 	width: 356px;
-	margin-left: 20px;
 	float: right;
 }
 
@@ -113,7 +131,16 @@ h3 { font-size: 22px; }
 
 #sample-button-container {
 	width: 220px;
-	margin-left: 35px;
+	margin-left: 50px;
+	float: left;
+}
+
+#sample-button-container h3 { float: left; }
+
+#sample-button-container #plain-text {
+	margin-left: 10px;
+	display: block;
+	line-height: 30px;
 	float: left;
 }
 
@@ -130,6 +157,7 @@ h3 { font-size: 22px; }
 #sample-button-container #sample-btn:visited {
 	width: 100px;
 	height: 50px;
+	margin-bottom: 10px;
 	padding-left: 10px;
 	display: block;
 	background: -webkit-gradient(
@@ -142,6 +170,7 @@ h3 { font-size: 22px; }
 	-moz-border-radius: 20px;
 	color: #FFFFFF;
 	text-decoration: none;
+	clear: both;
 }
 
 #add-swatch {
@@ -155,8 +184,12 @@ h3 { font-size: 22px; }
 	float: left;
 }
 
+#g-generator {
+	clear: both;
+}
+
 #g-generator h2 {
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 
 #footer {
@@ -194,7 +227,6 @@ h3 { font-size: 22px; }
 * Style Code sampling
 */
 #gradient-css {
-	margin-top: 20px;
 	font-family: monospace;
 }
 
@@ -203,12 +235,18 @@ ul.code li {
 	text-indent: 20px;
 }
 
+dl dd + dt {
+	margin-top: 10px;
+}
+
 dl dd {
 	margin: 0;
 }
 
 .details-section {
-	margin: 15px 0;
+	float: left;
+	width: 45%;
+	margin-left: 90px;
 }
 
 .jump-nav {
@@ -227,7 +265,7 @@ dl dd {
 }
 
 #gradient-direction {
-	margin-bottom: 20px;
+	margin-bottom: 40px;
 	float: left;
 }
 

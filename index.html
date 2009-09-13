@@ -21,47 +21,57 @@
 		<!--BEGIN: Page Wrapper-->
 		<div id="page-wrapper">
 			
-			<!--BEGIN: Page Wrapper-->
+			<!--BEGIN: Page Header-->
 			<div id="page-header">
 				<h1>CSS3 Webkit Gradient Generator v1.0</h1>
 				<p>Welcome to the CSS3 Webkit Gradient Generator. Please be aware that in order to make use of this utility you will need a webkit browser.  This will currently not work in Internet Explorer or Firefox.  Once CSS3 gradients are added to these browsers, the generator will be updated.</p>
-				
-				<p>Remember, CSS gradients are not limited to backgrounds, they can also be used in the CSS masks as well.</p>
-				<ul class="jump-nav hide">
-					<li><a href="#about">About</a></li>
-					<li><a href="#how">How To</a></li>
-					<li><a href="#generator">Generator</a></li>
-				</ul>
 			</div>
-			<!--END: Page Wrapper-->
+			<!--END: Page Header-->
 			
-			<!--BEGIN: Instructions-->
-			<div id="instructions">
-				<h2>How To</h2>
-				<p>The generator provides a graphical user interface to generate CSS3 webkit gradients such as a gradient tool you would find in Photoshop. You can define as many color swatches as you like and use the slider to define where the color starts.</p>
+			<!--BEGIN Info Panel-->
+			<div id="info-panel">
+				<!--BEGIN: Instructions-->
+				<div id="instructions">
+					<h2>Information</h2>
+					<p>The CSS3 Webkit Gradient Generator was created as showcase of the power of CSS based gradients as well as a tool for developers and designers to generate a gradient in CSS.</p>
+					<p>Webkit gradients generate an image result, meaning the result of a webkit-gradient can be used anywhere an image can be used, be it a background-image, mask,border, or list item bullet.</p>
+					<p>This tool can be used to quickly generate code to port over a gradient created in a design tool such as 
 				
+					<div class="notes-section">
+						<h2>Notes and Features to Come</h2>
+						<p>There is still more work to come and I'm working on adding some more features to the gradient generator. Below are some features to come soon.</p>
+						<ul>
+							<li>Currently only linear gradients are supported, <strong>Radial Gradients</strong> coming soon.</li>
+							<li>Currently only hex colors are used in the generator, <strong>RGB color support</strong> is coming soon.</li>
+						</ul>
+					</div>		
+				
+				</div>
+				<!--END: Instructions-->
+			
+				<!--BEGIN: Details-->
 				<div class="details-section">
 					<h3>Details:</h3>
 					<dl>
 						<dt>Add Swatch <img src="/images/icons/add.png" title="Add Icon" alt="Add Icon" /></dt>
 						<dd>Click this icon to add a new color swatch to your gradient palette.</dd>
-					
+				
 						<dt>Remove Swatch <img src="/images/icons/remove.png" title="Remove Icon" alt="Remove Icon" /></dt>
 						<dd>Click this icon to remove the swatch from your gradient palette.</dd>
-						
+					
 						<dt>Select Swatch <img src="/images/swatch-ss.png" title="Swatch Icon" alt="Swatch Example"/></dt>
 						<dd>Click the swatch to select it and then use the color picker on the right to apply a color to the selected swatch.</dd>
-					
+				
 						<dt>Adjust Color Position <img src="/images/slider-ss.png" title="Position Slider" alt="Position Slider" /></dt>
 						<dd>Use the slider associated with each color swatch to adjust the position for the color in the gradient.</dd>
+						
+						<dt>Adjust Gradient Direction <img src="/images/direction-ss.png" title="Direction Controls" alt="Direction Controls" /></dt>
+						<dd>You can adjust the direction of the gradient using the direction controls. You have the power to use the general keyword directions (left, right, bottom, top) or to specify numeric points for the gradient start and end points.</dd>
 					</dl>
 				</div>
-				
-				<h2>Notes:</h2>
-				<p>Currently, only linear gradients can be generated. I am working on adding radial gradient generation and it should be updated soon.</p>				
-				
+				<!--END: Details-->
 			</div>
-			<!--END: Instructions-->
+			<!--END: Info Panel-->
 			
 			<!--BEGIN: Generator -->	
 			<div id="g-generator">
@@ -140,7 +150,12 @@
 				<!--BEGIN: Sample Button-->
 				<div id="sample-button-container">
 					<h3>Sample</h3>
-					<a href="#" id="sample-btn">Sample Button</a>
+					<a id="plain-text" href="#" title="Show plain text code">Plain Text Code</a>
+					
+					<h4>Gradient Sample</h4>
+					<div id="sample-btn">Sample Button</div>
+				
+					<h4>Code Sample</h4>
 					<div id="gradient-css">
 							-webkit-gradient(
 							<ul class="code">
