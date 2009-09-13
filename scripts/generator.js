@@ -23,6 +23,9 @@
 		picker : $('#color-picker'),
 		gradientString : $('#gradient-css ul'),
 		
+		/**
+		* Let's set everyup
+		*/
 		init : function () {
 			swatch.init();		
 			
@@ -34,6 +37,8 @@
 			.mouseup(generator.updateGradientString);
 						
 			generator.currentSwatch = $('#swatch-1');
+			generator.setGradient();
+			generator.updateGradientString();
 		},
 				
 		/**
@@ -43,13 +48,12 @@
 			var color = hex;
 			var cPicker = generator.currentSwatch;
 			var pName = $(cPicker).attr('id');
-			var swatch = $(cPicker).find('.swatch-color');
-			
-			console.log(pName);
+			var _thisSwatch = $(cPicker).find('.swatch-color');
+
 			var gradient = swatch.findSwatch(pName);
 			gradient.color = color;
 			
-			$(swatch).css('background-color', '#' + color);
+			$(_thisSwatch).css('background-color', '#' + color);
 			generator.setGradient();
 		},
 		
@@ -125,9 +129,12 @@
 			swatch.container = $('#color-swatches');
 			
 			//Set up the intial swatches
-			swatch.setupSwatch('swatch-1');
-			swatch.setupSwatch('swatch-2');
+			swatch.setupSwatch('swatch-1', {'color' : '23adad', 'position': 12});
+			swatch.setupSwatch('swatch-2', {'color' : '2e2326', 'position' : 77});
 			
+			$('#swatch-1 .swatch-color').css('background-color', '#23adad');
+			$('#swatch-2 .swatch-color').css('background-color', '#2e2326');
+			console.log(generator.gradientProps);
 			//enable the first swatch's slider
 			$('#swatch-1 .swatch-slider').slider('enable');
 			
@@ -139,8 +146,6 @@
 			
 			//Set up JQuery live click handler for remove swatch triggers
 			$('.remove-trigger').live('click', swatch.removeSwatch);
-			
-			console.log(generator.gradientProps.gradients);
 		},
 		
 		/**
@@ -158,7 +163,6 @@
 				
 			swatch.container.append($newSwatch);
 			swatch.setupSwatch('swatch-' + swatchID);
-	
 		},
 		
 		/**
@@ -166,15 +170,16 @@
 		* 
 		* @param {String} | Element ID
 		*/
-		setupSwatch : function (element) {
+		setupSwatch : function (element, config) {
+			var config = config || {'color' : '000000', 'position' : 0};
 			var $_thisSwatch = $('#' + element);
 			$_thisSwatch.click(swatch.swatchClick);
 			generator.swatchCount++;
-					
+		
 			var tmpGradient = {
-				'color' : 'bd1746',
+				'color' : config.color,
 				'id' : element,
-				'position' : 0
+				'position' : config.position
 			};
 			
 			generator.gradientProps.gradients.push(tmpGradient);
@@ -182,9 +187,12 @@
 			$_thisSwatch.find('.swatch-slider').slider({
 				change : swatch.slideChange,
 				slide : swatch.slideChange,
-				stop : generator.updateGradientString
+				stop : generator.updateGradientString,
+				value : config.position
 			})
 			.slider('disable');
+			
+			swatch.updateSliderInput($_thisSwatch.find('.swatch-slider'), config.position);
 		},
 		
 		/**
@@ -241,13 +249,24 @@
 		* Handle the gradient position slider change
 		*/
 		slideChange : function (e, ui) {			
-			var target = e.target;
-			target = $(target).parent();
+			var slider = e.target;
+			var target = $(slider).parent();
 			var id = $(target).attr('id');
 			
 			var gradient = swatch.findSwatch(id);
 			gradient['position'] = ui.value;
 			generator.setGradient();
+			swatch.updateSliderInput(slider, ui.value);
+		},
+		
+		/**
+		* Handles updating the slider input based on using the slider
+		* 
+		* @param {String} | Value to display in text box
+		*/
+		updateSliderInput : function (slider, value) {
+			var input = $(slider).parent().find('.slider-input input');
+			input.attr('value', value);
 		},
 		
 		/**
@@ -255,7 +274,6 @@
 		*/
 		findSwatch : function (swatchName) {
 			var swatches = generator.gradientProps.gradients;
-			
 			for(var i=0; i<swatches.length; i++) {
 				var cSwatch  = swatches[i];
 				if(cSwatch.id === swatchName) return cSwatch;
