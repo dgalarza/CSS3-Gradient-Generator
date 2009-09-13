@@ -24,7 +24,7 @@
 		gradientString : $('#gradient-css ul'),
 		
 		/**
-		* Let's set everyup
+		* Let's set everything up
 		*/
 		init : function () {
 			swatch.init();		
@@ -37,8 +37,6 @@
 			.mouseup(generator.updateGradientString);
 						
 			generator.currentSwatch = $('#swatch-1');
-			generator.setGradient();
-			generator.updateGradientString();
 		},
 				
 		/**
@@ -93,12 +91,16 @@
 				.append( generator.createProp(gProps.dStart, ','))
 				.append( generator.createProp(gProps.dEnd, ','));
 			
-			//Loop through gradient colors
-			$.each(gradients, function(index, gradient){
+			//Loop through each gradient color
+			for(var i=0; i<gradients.length; i++) {
+				if(i !== gradients.length-1) var delimiter = ',';
+				else delimiter = '';
+				
+				var gradient = gradients[i];
 				var position = gradient.position / 100;
 				
-				$(gString).append( generator.createProp('color-stop(' + position + ',' + '#' + gradient.color + ')', ',') );
-			});
+				$(gString).append( generator.createProp('color-stop(' + position + ',' + '#' + gradient.color + ')', delimiter) );
+			}
 		},
 		
 		/**
@@ -132,9 +134,6 @@
 			swatch.setupSwatch('swatch-1', {'color' : '23adad', 'position': 12});
 			swatch.setupSwatch('swatch-2', {'color' : '2e2326', 'position' : 77});
 			
-			$('#swatch-1 .swatch-color').css('background-color', '#23adad');
-			$('#swatch-2 .swatch-color').css('background-color', '#2e2326');
-			console.log(generator.gradientProps);
 			//enable the first swatch's slider
 			$('#swatch-1 .swatch-slider').slider('enable');
 			
@@ -146,6 +145,7 @@
 			
 			//Set up JQuery live click handler for remove swatch triggers
 			$('.remove-trigger').live('click', swatch.removeSwatch);
+			$('.slider-input input').live('keyup', swatch.slideInputUpdate);
 		},
 		
 		/**
@@ -162,7 +162,18 @@
 				.find('.remove-trigger').attr('rel', 'swatch-' + swatchID);
 				
 			swatch.container.append($newSwatch);
-			swatch.setupSwatch('swatch-' + swatchID);
+			
+			/*
+			* Find out last color swatch so we can make the new swatch
+			* a similar color and position it accordingly
+			*/
+			var lastSwatch = generator.gradientProps.gradients.length - 1;
+			lastSwatch = generator.gradientProps.gradients[lastSwatch];
+		
+			swatch.setupSwatch('swatch-' + swatchID, {
+				color : lastSwatch.color,
+				position : lastSwatch.position + 10
+			});
 		},
 		
 		/**
@@ -174,16 +185,21 @@
 			var config = config || {'color' : '000000', 'position' : 0};
 			var $_thisSwatch = $('#' + element);
 			$_thisSwatch.click(swatch.swatchClick);
-			generator.swatchCount++;
 		
+			//Update our swatch count (simply used for naming conventions)
+			generator.swatchCount++;
+			
+			//Set up a new swatch object
 			var tmpGradient = {
 				'color' : config.color,
 				'id' : element,
 				'position' : config.position
 			};
 			
+			//Push our new gradient to the gradient array
 			generator.gradientProps.gradients.push(tmpGradient);
 			
+			//Set up the swatch's slider
 			$_thisSwatch.find('.swatch-slider').slider({
 				change : swatch.slideChange,
 				slide : swatch.slideChange,
@@ -191,8 +207,14 @@
 				value : config.position
 			})
 			.slider('disable');
-			
+				
 			swatch.updateSliderInput($_thisSwatch.find('.swatch-slider'), config.position);
+			
+			//Set up the swatches color
+			$_thisSwatch.find('.swatch-color').css('background-color', '#' + config.color);
+			
+			generator.setGradient();
+			generator.updateGradientString();
 		},
 		
 		/**
@@ -205,10 +227,23 @@
 				var target = e.target;
 				var rel = target.rel;
 
-				delete generator.gradientProps.gradients[rel];
+				var gradients = generator.gradientProps.gradients;
+				var index = 0;
+				
+				//Find the index of this gradient swatch
+				for(var i=0; i<gradients.length;i++) {
+					var gradient = gradients[i];
+					if(gradient.id === rel) {
+						index = i;
+						break;
+					}
+				};
+				
+				generator.gradientProps.gradients.remove(index);
+				
 				target = $(target).parent();
 				$(target).remove();
-
+				console.log('removed');
 				generator.setGradient();
 				generator.updateGradientString();
 			}
@@ -267,6 +302,35 @@
 		updateSliderInput : function (slider, value) {
 			var input = $(slider).parent().find('.slider-input input');
 			input.attr('value', value);
+		},
+		
+		/**
+		* Handle keyup detection for slider input field
+		*/
+		slideInputUpdate : function (e) {
+			e.preventDefault();
+			var target = e.target;
+			var _thisSlider = target;
+			var value = $(target).attr('value');
+			
+			//Make sure our value is within the limits before updating
+			if(value >=0 && value <= 100) {
+				while( !$(_thisSlider).hasClass('swatch')) {
+					_thisSlider = $(_thisSlider).parent();
+				}
+
+				var swatchName = $(_thisSlider).attr('id');
+				
+				_thisSlider = $(_thisSlider).find('.swatch-slider');
+				_thisSlider.slider('option', 'value', value);
+				
+				var gradient = swatch.findSwatch(swatchName);
+				gradient.position = value
+				
+				generator.setGradient();
+				generator.updateGradientString();
+				
+			}
 		},
 		
 		/**
