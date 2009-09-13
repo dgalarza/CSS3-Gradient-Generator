@@ -66,10 +66,59 @@
 			<!--BEGIN: Generator -->	
 			<div id="g-generator">
 				<h2>Generator</h2>
+				
+				<!--BEGIN: Gradient Direction controls-->
+				<div id="gradient-direction">
+					<h3>Gradient Direction</h3>
+					<p>Select the direction for the gradient.</p>
+					
+					<div id="xStart-select" class="select-wrapper">
+						<label for="xStart">xStart</label>
+						<select name="xStart" id="xStart">
+							<option selected="selected" value="left">Left</option>
+							<option value="right">Right</option>
+							<option value="custom">Custom</option>
+						</select>
+						<input class="hide" max-length="3" type="text" value="0" />
+					</div>
+					
+					<div id="yStart-select" class="select-wrapper">
+						<label for="yStart">yStart</label>		
+						<select name="yStart" id="yStart">
+							<option value="top">Top</option>
+							<option selected="selected" value="bottom">Bottom</option>
+							<option value="custom">Custom</option>
+						</select>
+						<input class="hide" max-length="3" type="text" value="0" />
+					</div>
+					
+					<div id="xEnd-select" class="select-wrapper">
+						<label for="xEnd">xEnd</label>
+						<select name="xEnd" id="xEnd">
+							<option selected="selected" value="left">Left</option>
+							<option value="right">Right</option>
+							<option value="custom">Custom</option>
+						</select>
+						<input class="hide" max-length="3" type="text" value="0" />
+					</div>
+					
+					<div id="yEnd-select" class="select-wrapper">
+						<label for="yEnd">yEnd</label>
+						<select name="yEnd" id="yEnd">
+							<option selected="selected" value="top">Top</option>
+							<option value="bottom">Bottom</option>
+							<option value="custom">Custom</option>
+						</select>
+						<input class="hide" max-length="3" type="text" value="0" />
+					</div>
+				</div>
+				<!--END: Gradient Direction Controls-->
+				
 				<!--BEGIN: Color Swatches-->
 				<div id="color-swatches">
 					<h3>Color Swatches</h3>
 					<a href="#" id="add-swatch" title="Add Swatch">Add Swatch</a>
+					
 					<p>Select colors to make up your gradient.</p>
 					<div id="swatch-1" class="swatch selected-swatch">
 						<a class="remove-trigger" href="#" rel="swatch-1">Remove Swatch</a>

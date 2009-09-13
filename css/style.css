@@ -43,6 +43,7 @@ h3 { font-size: 22px; }
 
 #color-swatches {
 	float: left;
+	clear: left;
 }
 
 #picker-container{
@@ -59,12 +60,15 @@ h3 { font-size: 22px; }
 	border: 1px solid #CCCCCC;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
+	background-color: #999799;
+	opacity: 0.75;
+	-webkit-transition: opacity 1s linear;
 }
 
 .swatch .swatch-color {
 	width: 20px;
 	height: 20px;
-	border: 3px solid #bdb0b0;
+	border: 3px solid #474447;
 	background-color: #bd1746;
 	margin-right: 10px;
 	cursor: pointer;
@@ -99,7 +103,8 @@ h3 { font-size: 22px; }
 }
 
 .swatch.selected-swatch {
-	background-color: #D3D3D3;
+	background-color: #FFFFFF;
+	opacity: 1;
 }
 
 .swatch.selected-swatch .swatch-color{
@@ -218,5 +223,29 @@ dl dd {
 }
 
 .jump-nav li:not(:first-child) {
+	margin-left: 30px;
+}
+
+#gradient-direction {
+	margin-bottom: 20px;
+	float: left;
+}
+
+#gradient-direction .select-wrapper label {
+	display: block;
+	color: #189CDA;
+	font-weight: bold;
+}
+
+.select-wrapper {
+	margin-top: 10px;
+	float: left;
+}
+
+.select-wrapper input[type="text"] {
+	width: 25px;
+}
+
+.select-wrapper:not(:nth-of-type(1)) {
 	margin-left: 30px;
 }

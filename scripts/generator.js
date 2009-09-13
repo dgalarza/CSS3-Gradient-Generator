@@ -10,13 +10,31 @@
 	
 	var generator = {
 		
+		/**
+		* Hold our gradient properties here
+		*/
 		gradientProps : {
 			'type' : 'linear',
-			'dStart' : 'left bottom',
-			'dEnd' : 'left top',
+			'xStart' : 'left',
+			'yStart' : 'bottom',
+			'xEnd'   : 'left',
+			'yEnd'   : 'top',
 			gradients : []
 		},
 		
+		/**
+		* Keep track of the select custom option states here
+		*/
+		selectStates : {
+			'xStart' : false,
+			'yStart' : false,
+			'xEnd'	 : false,
+			'yEnd'	 : false
+		},
+		
+		/**
+		* Other general, reuseable variables here
+		*/
 		swatchCount : 0,
 		currentSwatch : null,
 		sample : $('#sample-btn'),
@@ -35,7 +53,11 @@
 			})
 			.ColorPickerSetColor('#bd1746')
 			.mouseup(generator.updateGradientString);
-						
+			
+			//Set up our direction select options
+			$('.select-wrapper select').change(generator.selectChange);
+			$('.select-wrapper input[type=text]').keyup(generator.selectCustomChange);
+			
 			generator.currentSwatch = $('#swatch-1');
 		},
 				
@@ -61,7 +83,7 @@
 		setGradient : function () {
 			var gradientProps = generator.gradientProps;
 			var sample = generator.sample;
-			var gradientString = '-webkit-gradient(' + gradientProps.type + ',' + gradientProps.dStart + ',' + gradientProps.dEnd + ',';
+			var gradientString = '-webkit-gradient(' + gradientProps.type + ',' + generator.fetchGradientStart() + ',' + generator.fetchGradientEnd() + ',';
 			var gradientData = '';
 			$.each(generator.gradientProps.gradients, function (index, obj) {
 				var percent = (obj.position / 100);
@@ -71,6 +93,22 @@
 			gradientString = gradientString + gradientData;
 			gradientString = gradientString.substr(0, gradientString.length - 1) + ')';
 			$(sample).css('background', gradientString);
+		},
+		
+		/**
+		* Retreive the gradient's start point
+		*/
+		fetchGradientStart : function () {
+			var gradientProps = generator.gradientProps;
+			return gradientProps.xStart + ' ' + gradientProps.yStart;
+		},
+		
+		/**
+		* Retrieves the gradient's end point
+		*/
+		fetchGradientEnd : function () {
+			var gradientProps = generator.gradientProps;
+			return gradientProps.xEnd + ' ' + gradientProps.yEnd;
 		},
 		
 		/**
@@ -88,8 +126,8 @@
 			//Set up the general linear gradient properties
 			$(gString)
 				.append( generator.createProp(gProps.type, ',') )
-				.append( generator.createProp(gProps.dStart, ','))
-				.append( generator.createProp(gProps.dEnd, ','));
+				.append( generator.createProp(generator.fetchGradientStart(), ','))
+				.append( generator.createProp(generator.fetchGradientEnd(), ','));
 			
 			//Loop through each gradient color
 			for(var i=0; i<gradients.length; i++) {
@@ -114,6 +152,57 @@
 			var li = document.createElement('li');
 			$(li).html(data + delimiter);
 			return $(li);
+		},
+		
+		/**
+		* Gradient direction select change handler
+		*/
+		selectChange : function(e) {
+			e.preventDefault();
+			e.preventDefault();
+			var target = e.target;
+			var prop = $(target).attr('id');
+			var tValue = $(target).attr('value');
+			
+			if(tValue !== 'custom') {
+				//reset the custom field if it once was set
+				if(generator.selectStates[prop]) {
+					generator.selectStates[prop] = false;
+					
+					var $wrapper = $(target).parent();
+					$wrapper.find('input[type=text]').addClass('hide').attr('value', 0);
+				}
+				
+				generator.gradientProps[prop] = $(target).attr('value');
+				generator.setGradient();
+				generator.updateGradientString();			
+								
+			}else{
+				//Use a custom value
+				var $wrapper = $(target).parent();
+				$wrapper.find('input[type=text]').removeClass('hide');
+				
+				generator.selectStates[prop] = true;				
+			}	
+		},
+		
+		/**
+		* 
+		*
+		*/
+		selectCustomChange : function(e) {
+			e.preventDefault();
+			var target = e.target;
+			var $container = $(target).parent();
+			
+			var prop = $container.attr('id');
+			prop = prop.split('-');
+			prop = prop[0];
+			
+			generator.gradientProps[prop] = $(target).attr('value');
+			
+			generator.setGradient();
+			generator.updateGradientString();
 		}
 	};
 	
@@ -243,7 +332,7 @@
 				
 				target = $(target).parent();
 				$(target).remove();
-				console.log('removed');
+				
 				generator.setGradient();
 				generator.updateGradientString();
 			}
