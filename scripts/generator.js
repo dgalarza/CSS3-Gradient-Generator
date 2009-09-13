@@ -39,7 +39,7 @@
 		currentSwatch : null,
 		sample : $('#sample-btn'),
 		picker : $('#color-picker'),
-		gradientString : $('#gradient-css ul'),
+		gradientString : $('#gradient-css pre'),
 		
 		/**
 		* Let's set everything up
@@ -125,9 +125,10 @@
 			
 			//Set up the general linear gradient properties
 			$(gString)
-				.append( generator.createProp(gProps.type, ',') )
-				.append( generator.createProp(generator.fetchGradientStart(), ','))
-				.append( generator.createProp(generator.fetchGradientEnd(), ','));
+				.append( generator.createProp('-webkit-gradient(', ''))
+				.append( generator.createProp(gProps.type, ',', true) )
+				.append( generator.createProp(generator.fetchGradientStart(), ',', true))
+				.append( generator.createProp(generator.fetchGradientEnd(), ',', true));
 			
 			//Loop through each gradient color
 			for(var i=0; i<gradients.length; i++) {
@@ -137,8 +138,10 @@
 				var gradient = gradients[i];
 				var position = gradient.position / 100;
 				
-				$(gString).append( generator.createProp('color-stop(' + position + ',' + '#' + gradient.color + ')', delimiter) );
+				$(gString).append( generator.createProp('color-stop(' + position + ',' + '#' + gradient.color + ')', delimiter, true) );
 			}
+			
+			$(gString).append(generator.createProp(')', '', false));
 		},
 		
 		/**
@@ -147,11 +150,14 @@
 		* @param {String} | Content for CSS prop definition
 		* @param {String} | (Optional) Property seperator
 		*/
-		createProp : function(data, delimiter) {
+		createProp : function(data, delimiter, separator) {
 			var delimiter = delimiter || '';
-			var li = document.createElement('li');
-			$(li).html(data + delimiter);
-			return $(li);
+			
+			if(separator) separator = '    ';
+			else separator = '';
+			
+			var span = document.createTextNode(separator + data + delimiter + "\n");
+			return $(span);
 		},
 		
 		/**

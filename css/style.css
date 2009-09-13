@@ -21,7 +21,7 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 }
 
 #page-header {
-	margin-bottom: 20px;
+	margin-bottom: 40px;
 	padding: 20px;
 	background-color: #191919;
 	color: #FFFFFF;
@@ -135,8 +135,6 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	float: left;
 }
 
-#sample-button-container h3 { float: left; }
-
 #sample-button-container #plain-text {
 	margin-left: 10px;
 	display: block;
@@ -174,10 +172,10 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 }
 
 #add-swatch {
-	height: 24px;
-	width: 16px;
+	height: 25px;
+	width: 20px;
 	font-size: 11px;
-	background: url(/images/icons/add.png) no-repeat 0 8px;
+	background: url(/images/icons/add.png) no-repeat 0 5px;
 	text-indent: -9999px;
 	overflow: hidden;
 	display: block;
@@ -185,6 +183,9 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 }
 
 #g-generator {
+	width: 950px;
+	margin-bottom: 30px;
+	float: left;
 	clear: both;
 }
 
@@ -230,9 +231,9 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	font-family: monospace;
 }
 
-ul.code li {
-	list-style: none;
-	text-indent: 20px;
+.code span {
+	margin-left: 20px;
+	display: block;
 }
 
 dl dd + dt {

@@ -34,9 +34,7 @@
 				<div id="instructions">
 					<h2>Information</h2>
 					<p>The CSS3 Webkit Gradient Generator was created as showcase of the power of CSS based gradients as well as a tool for developers and designers to generate a gradient in CSS.</p>
-					<p>Webkit gradients generate an image result, meaning the result of a webkit-gradient can be used anywhere an image can be used, be it a background-image, mask,border, or list item bullet.</p>
-					<p>This tool can be used to quickly generate code to port over a gradient created in a design tool such as 
-				
+					<p>Webkit gradients generate an image result, meaning the result of a webkit-gradient can be used anywhere an image can be used, be it a background-image, mask,border, or list item bullet.</p>				
 					<div class="notes-section">
 						<h2>Notes and Features to Come</h2>
 						<p>There is still more work to come and I'm working on adding some more features to the gradient generator. Below are some features to come soon.</p>
@@ -89,7 +87,7 @@
 							<option value="right">Right</option>
 							<option value="custom">Custom</option>
 						</select>
-						<input class="hide" max-length="3" type="text" value="0" />
+						<input class="hide" maxlength="3" type="text" value="0" />
 					</div>
 					
 					<div id="yStart-select" class="select-wrapper">
@@ -99,7 +97,7 @@
 							<option selected="selected" value="bottom">Bottom</option>
 							<option value="custom">Custom</option>
 						</select>
-						<input class="hide" max-length="3" type="text" value="0" />
+						<input class="hide" maxlength="3" type="text" value="0" />
 					</div>
 					
 					<div id="xEnd-select" class="select-wrapper">
@@ -109,7 +107,7 @@
 							<option value="right">Right</option>
 							<option value="custom">Custom</option>
 						</select>
-						<input class="hide" max-length="3" type="text" value="0" />
+						<input class="hide" maxlength="3" type="text" value="0" />
 					</div>
 					
 					<div id="yEnd-select" class="select-wrapper">
@@ -119,7 +117,7 @@
 							<option value="bottom">Bottom</option>
 							<option value="custom">Custom</option>
 						</select>
-						<input class="hide" max-length="3" type="text" value="0" />
+						<input class="hide" maxlength="3" type="text" value="0" />
 					</div>
 				</div>
 				<!--END: Gradient Direction Controls-->
@@ -134,14 +132,14 @@
 						<a class="remove-trigger" href="#" rel="swatch-1">Remove Swatch</a>
 						<div class="swatch-color"></div>
 						<div class="swatch-slider"></div>
-						<div class="slider-input"><input type="text" max-length="3" /></div>
+						<div class="slider-input"><input type="text" maxlength="3" /></div>
 					</div>
 				
 					<div id="swatch-2" class="swatch">
 						<a class="remove-trigger" href="#" rel="swatch-2">Remove Swatch</a>
 						<div class="swatch-color"></div>
 						<div class="swatch-slider"></div>
-						<div class="slider-input"><input type="text" max-length="3" /></div>
+						<div class="slider-input"><input type="text" maxlength="3" /></div>
 					</div>
 				
 				</div>
@@ -150,23 +148,21 @@
 				<!--BEGIN: Sample Button-->
 				<div id="sample-button-container">
 					<h3>Sample</h3>
-					<a id="plain-text" href="#" title="Show plain text code">Plain Text Code</a>
-					
 					<h4>Gradient Sample</h4>
 					<div id="sample-btn">Sample Button</div>
 				
 					<h4>Code Sample</h4>
 					<div id="gradient-css">
+						<pre>
 							-webkit-gradient(
-							<ul class="code">
-								<li>linear</li>
-								<li>left top,</li>
-								<li>left bottom,</li>
-								<li>color-stop(0.5, #333333),</li>
-								<li>color-stop(0.8, #494949)</li>
-							</ul>
+								<span>linear</span>
+								<span>left top,</span>
+								<span>left bottom,</span>
+								<span>color-stop(0.5, #333333),</span>
+								<span>color-stop(0.8, #494949)</span>
 							)
-						</div>
+						</pre>
+					</div>
 				</div>
 				<!--END: Sample Button-->
 			
@@ -194,6 +190,9 @@
 						
 						<dt>More On Gradients</dt>
 						<dd>Find out more about CSS3 Gradients and the webkit implementation <a href="http://webkit.org/blog/175/introducing-css-gradients/" title="Webkit.org">at Surfin' Safari</a> and the <a href="http://developer.apple.com/safari/library/documentation/InternetWeb/Conceptual/SafariVisualEffectsProgGuide/Gradients/Gradients.html" title="Apple Safari Visual Effects Guide: Gradients">Apple Safari Visual Effects Guide: Gradients</a>.</dd>
+						
+						<dt>Icons</dt>
+						<dd>The icons used here are from the <a href="http://wefunction.com/2008/07/function-free-icon-set/" title="Function Free Icon Set">Function Free Icon Set</a></dd>
 					</dl>
 				</div>
 				
@@ -221,7 +220,7 @@
 			<a class="remove-trigger" href="#">Remove Swatch</a>
 			<div class="swatch-color"></div>
 			<div class="swatch-slider"></div>
-			<div class="slider-input"><input type="text" max-length="3" /></div>
+			<div class="slider-input"><input type="text" maxlength="3" /></div>
 		</div>
 		
 		<!--BEGIN: Javascript-->
