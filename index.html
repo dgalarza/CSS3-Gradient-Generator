@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+	<head>
+		<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" media="all" href="/css/yui-base-min.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="/css/yui-reset-min.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="/css/yui-font-min.css" />
+		
+		<link rel="stylesheet" type="text/css" media="all" href="/css/jquery-ui-1.7.2.custom.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/colorpicker.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />
+		
+		<title>CSS3 Webkit Gradient Generator</title>
+	</head>
+	
+	<body>
+		
+		<!--BEGIN: Page Wrapper-->
+		<div id="page-wrapper">
+			
+			<!--BEGIN: Page Wrapper-->
+			<div id="page-header">
+				<h1>CSS3 Webkit Gradient Generator v1.0</h1>
+				<p>Welcome to the CSS3 Webkit Gradient Generator. Please be aware that in order to make use of this utility you will need a webkit browser.  This will currently not work in Internet Explorer or Firefox.  Once CSS3 gradients are added to these browsers, the generator will be updated.</p>
+				
+				<p>Remember, CSS gradients are not limited to backgrounds, they can also be used in the CSS masks as well.</p>
+				<ul class="jump-nav hide">
+					<li><a href="#about">About</a></li>
+					<li><a href="#how">How To</a></li>
+					<li><a href="#generator">Generator</a></li>
+				</ul>
+			</div>
+			<!--END: Page Wrapper-->
+			
+			<!--BEGIN: Instructions-->
+			<div id="instructions">
+				<h2>How To</h2>
+				<p>The generator provides a graphical user interface to generate CSS3 webkit gradients such as a gradient tool you would find in Photoshop. You can define as many color swatches as you like and use the slider to define where the color starts.</p>
+				
+				<div class="details-section">
+					<h3>Details:</h3>
+					<dl>
+						<dt>Add Swatch <img src="/images/icons/add.png" title="Add Icon" alt="Add Icon" /></dt>
+						<dd>Click this icon to add a new color swatch to your gradient palette.</dd>
+					
+						<dt>Remove Swatch <img src="/images/icons/remove.png" title="Remove Icon" alt="Remove Icon" /></dt>
+						<dd>Click this icon to remove the swatch from your gradient palette.</dd>
+						
+						<dt>Select Swatch <img src="/images/swatch-ss.png" title="Swatch Icon" alt="Swatch Example"/></dt>
+						<dd>Click the swatch to select it and then use the color picker on the right to apply a color to the selected swatch.</dd>
+					
+						<dt>Adjust Color Position <img src="/images/slider-ss.png" title="Position Slider" alt="Position Slider" /></dt>
+						<dd>Use the slider associated with each color swatch to adjust the position for the color in the gradient.</dd>
+					</dl>
+				</div>
+				
+				<h2>Notes:</h2>
+				<p>Currently, only linear gradients can be generated. I am working on adding radial gradient generation and it should be updated soon.</p>				
+				
+			</div>
+			<!--END: Instructions-->
+			
+			<!--BEGIN: Generator -->	
+			<div id="g-generator">
+				<h2>Generator</h2>
+				<!--BEGIN: Color Swatches-->
+				<div id="color-swatches">
+					<h3>Color Swatches</h3>
+					<a href="#" id="add-swatch" title="Add Swatch">Add Swatch</a>
+					<p>Select colors to make up your gradient.</p>
+					<div id="swatch-1" class="swatch selected-swatch">
+						<a class="remove-trigger" href="#" rel="swatch-1">Remove Swatch</a>
+						<div class="swatch-color"></div>
+						<div class="swatch-slider"></div>
+					</div>
+				
+					<div id="swatch-2" class="swatch">
+						<a class="remove-trigger" href="#" rel="swatch-2">Remove Swatch</a>
+						<div class="swatch-color"></div>
+						<div class="swatch-slider"></div>
+					</div>
+				
+				</div>
+				<!--END: Color Swatches-->
+			
+				<!--BEGIN: Sample Button-->
+				<div id="sample-button-container">
+					<h3>Sample</h3>
+					<a href="#" id="sample-btn">Sample Button</a>
+					<div id="gradient-css">
+							-webkit-gradient(
+							<ul class="code">
+								<li>linear</li>
+								<li>left top,</li>
+								<li>left bottom,</li>
+								<li>color-stop(0.5, #333333),</li>
+								<li>color-stop(0.8, #494949)</li>
+							</ul>
+							)
+						</div>
+				</div>
+				<!--END: Sample Button-->
+			
+				<!--BEGIN: ColorPicker-->
+				<div id="picker-container">
+					<h3>Color Picker</h3>
+					<p>Choose a color for your selected swatch using the color picker below.</p>
+					<div id="color-picker"></div>
+				</div>
+				<!--END: ColorPicker-->
+			</div>
+			<!--END: Generator-->
+												
+			<!--BEGIN: Footer-->
+			<div id="footer">
+				<a name="about"></a>
+				<div class="left-block">
+					<h3>About</h3>
+					<dl>
+						<dt>ColorPicker</dt>
+						<dd>The ColorPicker uses the ColorPicker jQuery plugin available from <a href="http://www.eyecon.ro/colorpicker/" title="ColorPicker - jQuery Plugin">eyecon.ro</a></dd>
+						
+						<dt>Slider</dt>
+						<dd>Swatch sliders are created using the <a href="http://jqueryui.com/home" title="jQuery UI">jQuery UI</a>.</dd>
+						
+						<dt>More On Gradients</dt>
+						<dd>Find out more about CSS3 Gradients and the webkit implementation <a href="http://webkit.org/blog/175/introducing-css-gradients/" title="Webkit.org">at Surfin' Safari</a> and the <a href="http://developer.apple.com/safari/library/documentation/InternetWeb/Conceptual/SafariVisualEffectsProgGuide/Gradients/Gradients.html" title="Apple Safari Visual Effects Guide: Gradients">Apple Safari Visual Effects Guide: Gradients</a>.</dd>
+					</dl>
+				</div>
+				
+				<div class="right-block">
+					<h3>Social</h3>
+					<dl>
+						<dt>Blog</dt>
+						<dd>Read more about the CSS3 Webkit Gradient Generator and more on <a href="http://www.glrzad.com/" title="Visit glrzad.com">glrzad.com</a>.</dd>
+						
+						<dt>GitHub</dt>
+						<dd>Check out the code on <a href="http://github.com/dgalarza/" title="GitHub">GitHub</a>.</dd>
+						
+						<dt>Twitter</dt>
+						<dd>Follow me on <a href="http://www.twitter.com/dgalarza" title="Follow dgalarza on Twitter">Twitter</a>.</dd>
+					</dl>
+				</div>
+			</div>
+			<!--END: Footer -->
+						
+		</div>
+		<!--END: Page Wrapper-->
+		
+		<div id="swatch-template" class="swatch hide">
+			<a class="remove-trigger" href="#">Remove Swatch</a>
+			<div class="swatch-color"></div>
+			<div class="swatch-slider"></div>
+		</div>
+		
+		<!--BEGIN: Javascript-->
+		<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>
+		<script type="text/javascript" src="/scripts/jquery-ui-1.7.2.custom.min.js"></script>
+		<script type="text/javascript" src="/scripts/colorpicker.js"></script>
+		<script type="text/javascript" src="/scripts/generator.js"></script>
+		<!--END: Javascript-->
+		
+	</body>
+
+
+</html>
