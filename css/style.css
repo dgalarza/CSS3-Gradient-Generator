@@ -43,13 +43,17 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	float: left;
 }
 
+#info-panel p {
+	line-height: 20px;
+}
+
 #instructions {
 	width: 45%;
 	float: left;
 }
 
 #instructions p + p {
-	margin-top: 15px 0 10px 0;
+	margin: 15px 0 10px 0;
 }
 
 .notes-section {
@@ -243,6 +247,7 @@ dl dd + dt {
 
 dl dd {
 	margin: 0;
+	line-height: 20px;
 }
 
 .details-section {
