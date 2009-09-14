@@ -282,11 +282,20 @@
 			*/
 			var lastSwatch = generator.gradientProps.gradients.length - 1;
 			lastSwatch = generator.gradientProps.gradients[lastSwatch];
-		
-			swatch.setupSwatch('swatch-' + swatchID, {
-				color : lastSwatch.color,
-				position : lastSwatch.position + 10
-			});
+			
+			if(lastSwatch) {
+				var config = {
+					'color' : lastSwatch.color,
+					'position' : lastSwatch.position + 10
+				};
+			}else{
+				var config = {
+					'color' : '000000',
+					'position' : 0
+				};
+			}
+			
+			swatch.setupSwatch('swatch-' + swatchID, config);
 		},
 		
 		/**

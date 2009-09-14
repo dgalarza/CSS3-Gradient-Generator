@@ -49,11 +49,11 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 }
 
 #instructions p + p {
-	margin-top: 20px;
+	margin-top: 15px 0 10px 0;
 }
 
 .notes-section {
-	margin-top: 20px;
+	margin: 20px 0;
 }
 
 .notes-section ul {
@@ -158,6 +158,7 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	margin-bottom: 10px;
 	padding-left: 10px;
 	display: block;
+	background-color: #333333;
 	background: -webkit-gradient(
 		linear,
 		left top,
