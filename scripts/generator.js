@@ -351,30 +351,29 @@
 		removeSwatch : function(e) {
 			e.preventDefault();
 			
-			if(confirm('Are you sure you want to remove this color swatch?') ){
-				var target = e.target;
-				var rel = target.rel;
+			var target = e.target;
+			var rel = target.rel;
 
-				var gradients = generator.gradientProps.gradients;
-				var index = 0;
-				
-				//Find the index of this gradient swatch
-				for(var i=0; i<gradients.length;i++) {
-					var gradient = gradients[i];
-					if(gradient.id === rel) {
-						index = i;
-						break;
-					}
-				};
-				
-				generator.gradientProps.gradients.remove(index);
-				
-				target = $(target).parent();
-				$(target).remove();
-				
-				generator.setGradient();
-				generator.updateGradientString();
-			}
+			var gradients = generator.gradientProps.gradients;
+			var index = 0;
+			
+			//Find the index of this gradient swatch
+			for(var i=0; i<gradients.length;i++) {
+				var gradient = gradients[i];
+				if(gradient.id === rel) {
+					index = i;
+					break;
+				}
+			};
+			
+			generator.gradientProps.gradients.remove(index);
+			
+			target = $(target).parent();
+			$(target).remove();
+			
+			generator.setGradient();
+			generator.updateGradientString();
+			
 		},
 		
 		/**
