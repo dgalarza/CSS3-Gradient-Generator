@@ -282,11 +282,16 @@
 			*/
 			var lastSwatch = generator.gradientProps.gradients.length - 1;
 			lastSwatch = generator.gradientProps.gradients[lastSwatch];
-			
+									
 			if(lastSwatch) {
+				
+				var position = lastSwatch.position + 10;
+				//Make sure a valid swatch position value is available
+				if(position > 100) position = position - (position - 100);
+				
 				var config = {
 					'color' : lastSwatch.color,
-					'position' : lastSwatch.position + 10
+					'position' : position
 				};
 			}else{
 				var config = {
