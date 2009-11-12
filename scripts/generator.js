@@ -43,6 +43,14 @@
 		},
 		
 		/**
+		* Holds the our gradient string information
+		*/
+		gradientString : {
+			'moz' : null,
+			'webkit' : null
+		},
+		
+		/**
 		* Other general, reuseable variables here
 		*/
 		swatchCount : 0,
@@ -91,21 +99,60 @@
 		/**
 		* Run's through the gradient's properties and applies
 		* the gradient to our live button sample
-		*
 		*/
 		setGradient : function () {
-			var gradientProps = generator.gradientProps;
-			var sample = generator.sample;
-			var gradientString = '-webkit-gradient(' + gradientProps.type + ',' + generator.fetchGradientStart() + ',' + generator.fetchGradientEnd() + ',';
-			var gradientData = '';
+			generator.sample.css('background', generator.generateWebkitGradient());
+			generator.sample.css('background', generator.generateMozGradient());
+		},
+		
+		/**
+		* Factory to generate CSS code for Mozilla gradient support
+		*/
+		generateMozGradient : function () {
+			var gradientProps = generator.gradientProps,
+				gradientString = '-moz-' + gradientProps.type + '-gradient(',
+				gradientData = '';
+				$sample = generator.sample;
+				
+			/**
+			* Since moz-gradient does not take end points in the gradient string we must format our gradient string
+			* differently. We must only set start points. Since for a webkit gradient direction left left would 
+			* create a linear gradient at the same position to the left, we instead must set the position to center
+			* when xStart and xEnd match
+			*/
+			gradientProps.xStart === gradientProps.xEnd ? gradientString += 'center' : gradientString += gradientProps.xStart;
+			gradientString += ' ';
+			
+			gradientProps.yStart === gradientProps.yEnd ? gradientString += 'center' : gradientString += gradientProps.yStart;
+			gradientString += ',';
+				
+			$.each(generator.gradientProps.gradients, function (index, obj) {
+				gradientData = gradientData + '#' + obj.color + ' ' + obj.position + '%,';
+			});
+			
+			gradientString = gradientString + gradientData;
+			gradientString = gradientString.substr(0, gradientString.length - 1) + ')';
+			
+			return gradientString;
+		},
+		
+		/**
+		* Factory for generating Webkit gradient code
+		*/
+		generateWebkitGradient : function () {
+			var gradientProps = generator.gradientProps,
+				gradientString = '-webkit-gradient(' + gradientProps.type + ',' + generator.fetchGradientStart() + ',' + generator.fetchGradientEnd() + ',',
+				gradientData = '';
+			
 			$.each(generator.gradientProps.gradients, function (index, obj) {
 				var percent = (obj.position / 100);
 				gradientData = gradientData + 'color-stop(' + percent + ', #' + obj.color + '),';
-			});		
-						
+			});
+			
 			gradientString = gradientString + gradientData;
 			gradientString = gradientString.substr(0, gradientString.length - 1) + ')';
-			$(sample).css('background', gradientString);
+		
+			return gradientString;
 		},
 		
 		/**
@@ -224,6 +271,14 @@
 			
 			generator.setGradient();
 			generator.updateGradientString();
+		},
+		
+		/**
+		* Handle moving the color picker around when a user selects
+		* a color swatch to ensure that the color picker is always in sight
+		*/
+		positionColorPicker : function() {
+			
 		}
 	};
 	
