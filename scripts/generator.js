@@ -191,7 +191,8 @@
 				.append( generator.createProp(generator.fetchGradientEnd(), ',', true));
 			
 			//Loop through each gradient color
-			for(var i=0; i<gradients.length; i++) {
+			var gLength = gradients.length;
+			for(var i=0; i<gLength; i++) {
 				if(i !== gradients.length-1) var delimiter = ',';
 				else delimiter = '';
 				
@@ -202,6 +203,28 @@
 			}
 			
 			$(gString).append(generator.createProp(')', '', false));
+			
+			// Handle Moz String
+			var gPosition = '';
+			gProps.xStart === gProps.xEnd ? gPosition += 'center' : gPosition += gProps.xStart;
+			gPosition += ' ';
+			
+			gProps.yStart === gProps.yEnd ? gPosition += 'center' : gPosition += gProps.yStart;
+			
+			$(gString)
+				.append( generator.createProp('-moz-' + gProps.type + '-gradient('), '', false)
+				.append( generator.createProp(gPosition, ',', true));
+			
+			var delimiter;
+			for(var i=0; i<gLength; i++) {
+				i !== gLength - 1 ? delimiter = ',' : delimiter = '';  
+				
+				var gradient = gradients[i];
+				
+				$(gString).append(generator.createProp('#' + gradient.color + ' ' + gradient.position + '%', delimiter, true) );
+			}
+			
+			$(gString).append(generator.createProp(')', '', false));				
 		},
 		
 		/**
@@ -226,7 +249,6 @@
 		* the live sample and CSS once the user makes a change
 		*/
 		selectChange : function(e) {
-			e.preventDefault();
 			e.preventDefault();
 			var target = e.target;
 			var prop = $(target).attr('id');
