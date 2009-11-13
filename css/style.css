@@ -64,24 +64,26 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	margin: 10px 0 0 15px;
 }
 
-#color-swatches {
+#swatch-wrapper {
+	width: 225px;
 	float: left;
 	clear: left;
 }
 
-#picker-container{
+#color-swatches {
+	float: left;
+}
+
+#picker-container {
 	width: 356px;
 	float: right;
 }
 
 .swatch {
 	float: left;
-	clear: both;
 	margin-top: 10px;
-	padding: 10px;
+	padding: 2px;
 	border: 1px solid #CCCCCC;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
 	background-color: #999799;
 	opacity: 0.75;
 	-webkit-transition: opacity 1s linear;
@@ -92,35 +94,44 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	height: 20px;
 	border: 3px solid #474447;
 	background-color: #bd1746;
-	margin-right: 10px;
 	cursor: pointer;
 	float: left;
 }
 
-.swatch .remove-trigger {
+#swatch-controls {
+	margin-top: 10px;
+	padding: 10px;
+	border: 1px solid #CCCCCC;
+	float: left;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	background-color: #FFFFFF;
+	clear: both;
+}
+
+#swatch-controls .remove-trigger {
 	width: 20px;
 	height: 25px;
 	margin-right: 10px;
 	display: block;
 	background: url(/images/icons/remove.png) no-repeat 0 5px;
-	float: left;
 	text-indent: -9999px;
 	overflow: hidden;
 }
 
-.swatch .swatch-slider {
+#swatch-controls .swatch-slider {
 	width: 200px;
 	height: 10px;
 	margin-top: 7px;
 	float: left;
 }
 
-.swatch .slider-input {
+#swatch-controls .slider-input {
 	margin-top: 5px;
 	float: right;
 	clear: both;
 }
-.swatch .slider-input input{
+#swatch-controls .slider-input input{
 	width: 25px;
 }
 
@@ -146,12 +157,12 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	float: left;
 }
 
-#color-swatches h3 {
+#swatch-wrapper h3 {
 	margin-right: 5px;
 	float: left;
 }
 
-#color-swatches p {
+#swatch-wrapper p {
 	clear: both;
 }
 

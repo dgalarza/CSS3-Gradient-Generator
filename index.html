@@ -137,28 +137,41 @@
 				</div>
 				<!--END: Gradient Direction Controls-->
 				
-				<!--BEGIN: Color Swatches-->
-				<div id="color-swatches">
+				<!--BEGIN: Swatch Wrapper-->
+				<div id="swatch-wrapper">
 					<h3>Color Swatches</h3>
 					<a href="#" id="add-swatch" title="Add Swatch">Add Swatch</a>
-					
+				
 					<p>Select colors to make up your gradient.</p>
-					<div id="swatch-1" class="swatch selected-swatch">
-						<a class="remove-trigger" href="#" rel="swatch-1">Remove Swatch</a>
-						<div class="swatch-color"></div>
-						<div class="swatch-slider"></div>
-						<div class="slider-input"><input type="text" maxlength="3" /></div>
-					</div>
 				
-					<div id="swatch-2" class="swatch">
+					<!--BEGIN: Color Swatches-->
+					<div id="color-swatches">
+						<div id="swatch-zero" class="swatch">
+							<div class="swatch-color"></div>
+						</div>
+					
+						<div id="swatch-1" class="swatch selected-swatch">
+							<div class="swatch-color"></div>
+						</div>
+				
+						<div id="swatch-2" class="swatch">
+							<div class="swatch-color"></div>
+						</div>
+				
+					</div>
+					<!--END: Color Swatches-->
+					
+					<!--BEGIN: Swatch Controls-->
+					<div id="swatch-controls">
 						<a class="remove-trigger" href="#" rel="swatch-2">Remove Swatch</a>
-						<div class="swatch-color"></div>
 						<div class="swatch-slider"></div>
 						<div class="slider-input"><input type="text" maxlength="3" /></div>
 					</div>
-				
+					<!--END: Swatch Controls-->
+					
+					
 				</div>
-				<!--END: Color Swatches-->
+				<!--END: Swatch Wrapper-->
 			
 				<!--BEGIN: Sample Button-->
 				<div id="sample-button-container">
@@ -233,10 +246,7 @@
 		<!--END: Page Wrapper-->
 		
 		<div id="swatch-template" class="swatch hide">
-			<a class="remove-trigger" href="#">Remove Swatch</a>
 			<div class="swatch-color"></div>
-			<div class="swatch-slider"></div>
-			<div class="slider-input"><input type="text" maxlength="3" /></div>
 		</div>
 		
 		<!--BEGIN: Javascript-->
@@ -245,6 +255,7 @@
 		<script type="text/javascript" src="/scripts/extend.js"></script>
 		<script type="text/javascript" src="/scripts/colorpicker.js"></script>
 		<script type="text/javascript" src="/scripts/generator.js"></script>
+		<script type="text/javascript" src="/scripts/swatches.js"></script>
 		<!--END: Javascript-->
 		
 	</body>
