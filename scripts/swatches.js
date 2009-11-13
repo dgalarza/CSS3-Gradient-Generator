@@ -14,29 +14,34 @@ cssGradient.swatch = (function () {
 	// Cache the container
 	var $container;
 	
+	// Hold our currently selected swatch ID here
+	var currentSwatch = 'swatch-1';
+	
+	// Hold the swatch controls
+	var $swatchControls = $('#swatch-controls');
+	
 	//Set up the swatch handler
 	var init = function () {
 		//Cache our swatch container up front
 		$container = $('#color-swatches');
 		
 		//Set up the intial swatches
-		//setupSwatch('swatch-1', {'color' : '23adad', 'position': 12});
-		//setupSwatch('swatch-2', {'color' : '2e2326', 'position' : 77});
-		
-		//enable the first swatch's slider
-		/*
-		$('#swatch-1 .swatch-slider').slider('enable');
-		
+		setupSwatch('swatch-1', {'color' : '23adad', 'position': 12});
+		setupSwatch('swatch-2', {'color' : '2e2326', 'position' : 77});
+				
 		//Set up the click handler for add swatch
 		$('#add-swatch').click(function(e){
 			e.preventDefault();
-			swatch.createSwatch();
+			createSwatch();
 		});
 		
+		$('.swatch').live('click', swatchClick);
+		
+		$swatchControls.find('.swatch-slider').slider();
+		
 		//Set up JQuery live click handler for remove swatch triggers
-		$('.remove-trigger').live('click', swatch.removeSwatch);
-		$('.slider-input input').live('keyup', swatch.slideInputUpdate);
-		*/
+		//$('.remove-trigger').live('click', swatch.removeSwatch);
+		//$('.slider-input input').live('keyup', swatch.slideInputUpdate);
 	};
 	
 	var createSwatch = function () {
@@ -50,10 +55,12 @@ cssGradient.swatch = (function () {
 		// Setup our new swatch
 		$newSwatch
 			.attr('id', 'swatch-' + swatchID)
-			.removeClass('hide')
-			.find('.remove-trigger').attr('rel', 'swatch-' + swatchID);
+			.attr('rel', 'swatch-' + swatchID)
+			.removeClass('hide');
 		
 		$container.append($newSwatch);
+		
+		setupSwatch('swatch-' + swatchID);
 		
 	};
 	
@@ -65,40 +72,85 @@ cssGradient.swatch = (function () {
 	* @param {String} | Element ID
 	* @param {Object} | Configuration parameters for the object (Color and position)
 	*/
-	setupSwatch = function (element, config) {
+	var setupSwatch = function (element, config) {
 		var config = config || {'color' : '000000', 'position' : 0};
 		var $_thisSwatch = $('#' + element);
-		$_thisSwatch.click(swatch.swatchClick);
+		$_thisSwatch.click(swatchClick);
 	
 		//Update our swatch count (simply used for naming conventions)
-		generator.swatchCount++;
+		swatchCount++;
 		
 		//Set up a new swatch object
-		var tmpGradient = {
+		collection[element] = {
 			'color' : config.color,
 			'id' : element,
 			'position' : config.position
 		};
 		
-		//Push our new gradient to the gradient array
-		generator.gradientProps.gradients.push(tmpGradient);
-		
-		//Set up the swatch's slider
-		$_thisSwatch.find('.swatch-slider').slider({
-			change : swatch.slideChange,
-			slide : swatch.slideChange,
-			stop : generator.updateGradientString,
-			value : config.position
-		})
-		.slider('disable');
-			
-		swatch.updateSliderInput($_thisSwatch.find('.swatch-slider'), config.position);
+		// Update the slider
+		updateSlider(config.position);
 		
 		//Set up the swatches color
-		$_thisSwatch.find('.swatch-color').css('background-color', '#' + config.color);
+		$_thisSwatch.find('a').css('background-color', '#' + config.color);
+		$swatchControls.find('.remove-trigger').click(removeSwatch);
 		
-		generator.setGradient();
-		generator.updateGradientString();
+		currentSwatch = element;
+		
+		// Move the commented code below to generator
+		
+		// generator.setGradient();
+		// generator.updateGradientString();
+	};
+	
+	/**
+	* Click handler for the remove swatch trigger. This removes the swatch
+	* from the page as well as its entry in the gradients array.
+	*
+	* Once it is removed, the gradient sample is updated to show this.
+	*/
+	removeSwatch = function(e) {
+		e.preventDefault();
+
+		// Remove the swatch from our collection
+		delete collection[currentSwatch];
+		
+		// Remove the swatch from the page
+		$container.find('#' + currentSwatch).remove();
+		
+		// Set our current selected swatch after removing this swatch
+		var nextSwatch = $container.find('.swatch')[0];
+		$(nextSwatch).click();
+		
+		// generator.setGradient();
+		// generator.updateGradientString();
+		
+	};
+	
+	/**
+	* Handle a swatch click
+	*/
+	var swatchClick = function (e) {
+		e.preventDefault();
+		currentSwatch = this.id;
+	
+		$container.find('.selected-swatch').removeClass('selected-swatch');
+		$(this).addClass('selected-swatch');
+		
+		updateSlider();
+	};
+	
+	/**
+	* Update the slider based on the currently selected swatch
+	*
+	*/
+	var updateSlider = function() {
+		var _thisSwatch = collection[currentSwatch];
+		
+		$swatchControls.find('.swatch-slider')
+			.css('background-color', _thisSwatch.color)
+			.slider('option', 'value', _thisSwatch.position);
+			
+		$swatchControls.find('.slider-input input[type=text]').attr('value', _thisSwatch.position);
 	};
 	
 	return {

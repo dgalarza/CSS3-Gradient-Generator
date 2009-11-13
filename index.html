@@ -145,20 +145,10 @@
 					<p>Select colors to make up your gradient.</p>
 				
 					<!--BEGIN: Color Swatches-->
-					<div id="color-swatches">
-						<div id="swatch-zero" class="swatch">
-							<div class="swatch-color"></div>
-						</div>
-					
-						<div id="swatch-1" class="swatch selected-swatch">
-							<div class="swatch-color"></div>
-						</div>
-				
-						<div id="swatch-2" class="swatch">
-							<div class="swatch-color"></div>
-						</div>
-				
-					</div>
+					<ul id="color-swatches">
+						<li id="swatch-1" class="swatch selected-swatch"><a href="#swatch-1" rel="swatch-1"></a></li>
+						<li id="swatch-2" class="swatch"><a href="#swatch-2" rel="swatch-2"></a></li>
+					</ul>
 					<!--END: Color Swatches-->
 					
 					<!--BEGIN: Swatch Controls-->
@@ -245,9 +235,7 @@
 		</div>
 		<!--END: Page Wrapper-->
 		
-		<div id="swatch-template" class="swatch hide">
-			<div class="swatch-color"></div>
-		</div>
+		<li id="swatch-template" class="swatch hide"><a href="#swatch-template" rel="#swatch-template"></a></li>
 		
 		<!--BEGIN: Javascript-->
 		<script type="text/javascript" src="/scripts/jquery-1.3.2.min.js"></script>

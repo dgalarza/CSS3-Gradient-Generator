@@ -63,7 +63,7 @@
 		* Let's set everything up
 		*/
 		init : function () {
-			swatch.init();		
+			//swatch.init();		
 			
 			generator.picker.ColorPicker({
 				flat: true,
