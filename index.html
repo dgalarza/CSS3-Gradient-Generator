@@ -23,18 +23,25 @@
 			
 			<!--BEGIN: Page Header-->
 			<div id="page-header">
-				<h1>CSS3 Webkit Gradient Generator v1.0</h1>
-				<p>Welcome to the CSS3 Webkit Gradient Generator. Please be aware that in order to make use of this utility you will need a webkit browser.  This will currently not work in Internet Explorer or Firefox.  Once CSS3 gradients are added to these browsers, the generator will be updated.</p>
+				<h1>CSS3 Webkit Gradient Generator v1.5</h1>
+				<p>Welcome to the CSS3 Gradient Generator! Please be aware that in order to make the most use of this utility you will need either a webkit browser such as Safari or Google Chrome, or the Firefox 3.6 beta. Currently Internet Explorer does not support CSS based gradients. This tool is updated whenever implementation methods are changed.</p>
 			</div>
 			<!--END: Page Header-->
+			
+			<div id="generator-news">
+				<h2>Updates</h2>
+				<h3>Mozilla CSS Gradient Support<span class="post-date">11/12/2009</span></h3>
+				<p>With the release of Firefox 3.6b Mozilla introduced support for CSS based gradients. After lots of user feedback, the implementation of CSS gradients in Firefox was changed. This generator uses the latest implementation of Mozilla gradients <a href="http://weblogs.mozillazine.org/roc/archives/2009/11/css_gradient_sy.html" target="_blank">found here</a>.
+				<p>If your looking to learn more about the Mozilla implementation of CSS gradients you can <a href="http://www.glrzad.com/">read my blog post</a> which compares the implementation of -moz-linear-gradient and the -webkit-gradient.</p>
+			</div>
 			
 			<!--BEGIN Info Panel-->
 			<div id="info-panel">
 				<!--BEGIN: Instructions-->
 				<div id="instructions">
 					<h2>Information</h2>
-					<p>The CSS3 Webkit Gradient Generator was created as showcase of the power of CSS based gradients as well as a tool for developers and designers to generate a gradient in CSS.</p>
-					<p>Webkit gradients generate an image result, meaning the result of a webkit-gradient can be used anywhere an image can be used, be it a background-image, mask,border, or list item bullet.</p>				
+					<p>The CSS3 Gradient Generator was created as showcase of the power of CSS based gradients as well as a tool for developers and designers to generate a gradient in CSS.</p>
+					<p>CSS gradients generate an image result, meaning the result of a webkit-gradient can be used anywhere an image can be used, be it a background-image, mask,border, or list item bullet.</p>				
 					<div class="notes-section">
 						<h2>Notes and Features to Come</h2>
 						<p>There is still more work to come and I'm working on adding some more features to the gradient generator. Below are some features to come soon.</p>
@@ -45,7 +52,7 @@
 					</div>		
 					
 					<h2>Don't See a Gradient Sample?</h2>
-					<p>Make sure you're using a Webkit browser.</p>
+					<p>Make sure you're using a Webkit browser such as Safari or Chrome OR use Firefox 3.6 Beta.</p>
 				
 				</div>
 				<!--END: Instructions-->
@@ -77,6 +84,11 @@
 			<!--BEGIN: Generator -->	
 			<div id="g-generator">
 				<h2>Generator</h2>
+				
+				<script type="text/javascript">
+					digg_url = 'http://digg.com/programming/CSS3_Webkit_Gradient_Generator';
+				</script>
+				<script src="http://digg.com/tools/diggthis.js" type="text/javascript"></script>
 				
 				<!--BEGIN: Gradient Direction controls-->
 				<div id="gradient-direction">
@@ -193,6 +205,7 @@
 						
 						<dt>More On Gradients</dt>
 						<dd>Find out more about CSS3 Gradients and the webkit implementation <a href="http://webkit.org/blog/175/introducing-css-gradients/" title="Webkit.org">at Surfin' Safari</a> and the <a href="http://developer.apple.com/safari/library/documentation/InternetWeb/Conceptual/SafariVisualEffectsProgGuide/Gradients/Gradients.html" title="Apple Safari Visual Effects Guide: Gradients">Apple Safari Visual Effects Guide: Gradients</a>.</dd>
+						<dd>Read about Mozilla's implementation of CSS3 Gradients on <a href="http://hacks.mozilla.org/2009/11/api-change-media-load-css-gradient/" title="hacks.moz.org" target="_blank">hacks.mozilla.org</a></dd>
 						
 						<dt>Icons</dt>
 						<dd>The icons used here are from the <a href="http://wefunction.com/2008/07/function-free-icon-set/" title="Function Free Icon Set">Function Free Icon Set</a>.</dd>

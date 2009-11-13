@@ -294,3 +294,34 @@ dl dd {
 .select-wrapper:not(:nth-of-type(1)) {
 	margin-left: 30px;
 }
+
+/**
+* Digg iFrame Styles
+*/
+iframe {
+	position: relative;
+	top: -48px;
+	right: -474px;
+}
+
+/**
+* News Block
+*/
+#generator-news {
+	margin: 0 10px 30px;
+}
+
+#generator-news .post-date {
+	margin-left: 10px;
+	color: #333333;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+#generator-news p {
+	line-height: 18px;
+}
+
+#generator-news p + p {
+	margin-top: 10px;
+}
