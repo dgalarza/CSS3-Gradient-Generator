@@ -119,19 +119,23 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	background: url(/images/icons/remove.png) no-repeat 0 5px;
 	text-indent: -9999px;
 	overflow: hidden;
+	float: left;
 }
 
 #swatch-controls .swatch-slider {
 	width: 200px;
-	height: 10px;
-	margin-top: 7px;
+	height: 15px;
+	margin: 7px 0;
 	float: left;
+}
+
+#swatch-controls .swatch-slider .ui-slider-handle {
+	top: -2px;
 }
 
 #swatch-controls .slider-input {
 	margin-top: 5px;
 	float: right;
-	clear: both;
 }
 #swatch-controls .slider-input input{
 	width: 25px;
