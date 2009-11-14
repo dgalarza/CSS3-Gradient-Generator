@@ -42,6 +42,7 @@ cssGradient.swatch = (function () {
 		$('#add-swatch').click(function(e){
 			e.preventDefault();
 			createSwatch();
+			$('#' + currentSwatch).click();
 		});
 		
 		// Set up the event handler for keyup detection on manual gradient position
@@ -55,6 +56,8 @@ cssGradient.swatch = (function () {
 			change : slideChange,
 			slide : slideChange,
 		});
+		
+		$swatchControls.find('.remove-trigger').click(removeSwatch);
 		
 		// Reset our current swatch to swatch-1
 		currentSwatch = 'swatch-1';
@@ -109,7 +112,6 @@ cssGradient.swatch = (function () {
 		
 		//Set up the swatches color
 		$_thisSwatch.find('a').css('background-color', '#' + config.color);
-		$swatchControls.find('.remove-trigger').click(removeSwatch);
 		
 		currentSwatch = element;		
 	};
@@ -126,11 +128,22 @@ cssGradient.swatch = (function () {
 		// Remove the swatch from our palette
 		delete palette[currentSwatch];
 		
+		var swatches = $container.find('.swatch'),
+			swatchesLength = swatches.length,
+			swatchIndex = 0;
+			
+		for(var i=0; i<swatchesLength; i++) {
+			if(swatches[i].id === currentSwatch) swatchIndex = i;
+		}
+		
+		var nextIndex;
+		swatchIndex === 0 ? nextIndex = 1 : nextIndex = swatchIndex - 1;
+				
 		// Remove the swatch from the page
 		$container.find('#' + currentSwatch).remove();
 		
 		// Set our current selected swatch after removing this swatch
-		var nextSwatch = $container.find('.swatch')[0];
+		var nextSwatch = swatches[nextIndex];
 		$(nextSwatch).click();		
 	};
 	
