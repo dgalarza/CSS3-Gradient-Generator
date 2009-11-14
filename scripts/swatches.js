@@ -159,13 +159,13 @@ cssGradient.swatch = (function () {
 	};
 	
 	/**
-	* Set the color of a swatch
+	* Set the color of the current swatch
 	*
-	* @param {String} Swatch ID
 	* @param {String} Color for swatch
 	*/
-	var setColor = function(swatch, color) {
-		collection[swatch].color = color;
+	var setColor = function(color) {
+		collection[currentSwatch].color = color;
+		$('#' + currentSwatch).find('a').css('background-color', '#' + color);
 	};
 	
 	/**
