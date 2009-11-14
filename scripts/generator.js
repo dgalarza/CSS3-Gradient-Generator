@@ -31,7 +31,6 @@
 			'yStart' : 'bottom',
 			'xEnd'   : 'left',
 			'yEnd'   : 'top',
-			gradients : []
 		},
 		
 		/**
@@ -47,8 +46,6 @@
 		/**
 		* Other general, reuseable variables here
 		*/
-		swatchCount : 0,
-		currentSwatch : null,
 		sample : $('#sample-btn'),
 		picker : $('#color-picker'),
 		gradientString : $('#gradient-css pre'),
@@ -73,9 +70,16 @@
 			
 			generator.currentSwatch = $('#swatch-1');
 			
-			$('#swatch-controls .swatch-slider').slider({
-				'onchange' : generator.setGradient
-			});
+			// Extend the swatch methods which are attached to the slider with generator methods
+			var $swatchControls = $('#swatch-controls');
+
+			$swatchControls.find('.swatch-slider')
+				.bind('slidechange', generator.setGradient)
+				.bind('slide', generator.setGradient);
+			
+			$swatchControls.find('.slider-input input[type=text]').bind('keyup', generator.setGradient);	
+			
+			generator.setGradient();
 		},
 				
 		/**
@@ -119,8 +123,8 @@
 			gradientProps.yStart === gradientProps.yEnd ? gradientString += 'center' : gradientString += gradientProps.yStart;
 			gradientString += ',';
 				
-			var collection = swatch.getCollection();
-			$.each(collection, function (index, obj) {
+			var palette = swatch.getPalette();
+			$.each(palette, function (index, obj) {
 				gradientData = gradientData + '#' + obj.color + ' ' + obj.position + '%,';
 			});
 			
@@ -138,10 +142,10 @@
 				gradientString = '-webkit-gradient(' + gradientProps.type + ',' + generator.fetchGradientStart() + ',' + generator.fetchGradientEnd() + ',',
 				gradientData = '';
 			
-			var collection = swatch.getCollection(),
+			var palette = swatch.getPalette(),
 				percent;
 				
-			$.each(collection, function (index, obj) {
+			$.each(palette, function (index, obj) {
 				percent = (obj.position / 100);
 				gradientData = gradientData + 'color-stop(' + percent + ', #' + obj.color + '),';
 			});
@@ -175,7 +179,7 @@
 		updateGradientString : function () {
 			var gString = generator.gradientString;
 			var gProps = generator.gradientProps;
-			var gradients = swatch.getCollection();
+			var gradients = swatch.getPalette();
 			
 			//Clear the old gradient code
 			$(gString).html('');
@@ -291,56 +295,6 @@
 			
 			generator.setGradient();
 			generator.updateGradientString();
-		}
-	};
-	
-	/**
-	* Handles all color swatch related activity such as creating and
-	* intializing a swatch and its components such as the slider and
-	* remove trigger.
-	*/
-	var swatch = {
-				
-		
-		/**
-		* Handles updating the slider input based on using the slider
-		* 
-		* @param {String} | Value to display in text box
-		*/
-		updateSliderInput : function (slider, value) {
-			var input = $(slider).parent().find('.slider-input input');
-			input.attr('value', value);
-		},
-		
-		/**
-		* Handle keyup detection for slider input field so that we can
-		* update the live gradient sample and CSS code sample as soon
-		* as the user alters the data.
-		*/
-		slideInputUpdate : function (e) {
-			e.preventDefault();
-			var target = e.target;
-			var _thisSlider = target;
-			var value = $(target).attr('value');
-			
-			//Make sure our value is within the limits before updating
-			if(value >=0 && value <= 100) {
-				while( !$(_thisSlider).hasClass('swatch')) {
-					_thisSlider = $(_thisSlider).parent();
-				}
-
-				var swatchName = $(_thisSlider).attr('id');
-				
-				_thisSlider = $(_thisSlider).find('.swatch-slider');
-				_thisSlider.slider('option', 'value', value);
-				
-				var gradient = swatch.findSwatch(swatchName);
-				gradient.position = value
-				
-				generator.setGradient();
-				generator.updateGradientString();
-				
-			}
 		}
 	};
 	
