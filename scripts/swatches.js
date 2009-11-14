@@ -37,7 +37,12 @@ cssGradient.swatch = (function () {
 		
 		$('.swatch').live('click', swatchClick);
 		
-		$swatchControls.find('.swatch-slider').slider();
+		$swatchControls.find('.swatch-slider').slider({
+			change : slideChange,
+			slide : slideChange,
+		});
+		
+		currentSwatch = 'swatch-1';
 		
 		//Set up JQuery live click handler for remove swatch triggers
 		//$('.remove-trigger').live('click', swatch.removeSwatch);
@@ -132,7 +137,7 @@ cssGradient.swatch = (function () {
 	var swatchClick = function (e) {
 		e.preventDefault();
 		currentSwatch = this.id;
-	
+
 		$container.find('.selected-swatch').removeClass('selected-swatch');
 		$(this).addClass('selected-swatch');
 		
@@ -153,9 +158,47 @@ cssGradient.swatch = (function () {
 		$swatchControls.find('.slider-input input[type=text]').attr('value', _thisSwatch.position);
 	};
 	
+	/**
+	* Set the color of a swatch
+	*
+	* @param {String} Swatch ID
+	* @param {String} Color for swatch
+	*/
+	var setColor = function(swatch, color) {
+		collection[swatch].color = color;
+	};
+	
+	/**
+	* Set the color position of the swatch in the gradient
+	*
+	* @param {String} Swatch ID
+	* @param {String} Position value
+	*/
+	var setPosition = function(swatch, position) {
+		collection[swatch].position = position;
+	};
+	
+	/**
+	* Handle the gradient position slider change, updating the 
+	* position of the color in the gradient live, while the user
+	* adjusts the slider.
+	*/
+	var slideChange = function (e, ui) {			
+		var slider = e.target;
+		
+		collection[currentSwatch].position = ui.value;
+		$swatchControls.find('.slider-input input[type=text]').attr('value', ui.value);
+	};
+	
+	// Return the Public API for color swatches
 	return {
 		'init' : init,
-		'createSwatch' : createSwatch
+		'setColor' : setColor,
+		'setPosition' : setPosition,
+		
+		// Accessor methods
+		'getCurrentSwatch' : function () { return currentSwatch; },
+		'getCollection' : function () { return collection; }
 	};
 	
 })();
