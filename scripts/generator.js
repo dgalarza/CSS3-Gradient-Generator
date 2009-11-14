@@ -77,6 +77,12 @@
 				.bind('slidechange', generator.setGradient)
 				.bind('slide', generator.setGradient);
 			
+			// Extend add swatch button click handler to update gradient code on new gradient
+			$('#add-swatch').click(generator.setGradient);
+			
+			// Extend the remove swatch click handler to update gradient code on new gradient
+			$('#swatch-controls .remove-trigger').click(generator.setGradient);
+			
 			$swatchControls.find('.slider-input input[type=text]').bind('keyup', generator.setGradient);	
 			
 			generator.setGradient();
@@ -109,7 +115,20 @@
 			var gradientProps = generator.gradientProps,
 				gradientString = '-moz-' + gradientProps.type + '-gradient(',
 				gradientData = '';
-				$sample = generator.sample;
+				$sample = generator.sample,
+				gCount = swatch.getPaletteLength(),
+				palette = swatch.getPalette();
+			
+			/*
+			* If only one color is in our pallete return the color for our sample since
+			* Firefox doesn't seem to like one color in a gradient string and won't replace
+			* the old string
+			*/
+			if(gCount === 1) {
+				for(name in palette) {
+					return '#' + palette[name].color;
+				}
+			}			
 				
 			/**
 			* Since moz-gradient does not take end points in the gradient string we must format our gradient string
@@ -122,15 +141,14 @@
 			
 			gradientProps.yStart === gradientProps.yEnd ? gradientString += 'center' : gradientString += gradientProps.yStart;
 			gradientString += ',';
-				
-			var palette = swatch.getPalette();
+				 
 			$.each(palette, function (index, obj) {
 				gradientData = gradientData + '#' + obj.color + ' ' + obj.position + '%,';
 			});
 			
 			gradientString = gradientString + gradientData;
 			gradientString = gradientString.substr(0, gradientString.length - 1) + ')';
-			
+						
 			return gradientString;
 		},
 		
@@ -193,13 +211,12 @@
 			
 			//Loop through each gradient color
 			var delimiter = ',',
-				gLength = $(gradients).length,
+				gLength = swatch.getPaletteLength(),
 				count = 0,
 				position;
-
+			
 			$.each(gradients, function(index, gradient) {
-				(count === gLength) ? delimiter = '' : ',';
-				
+				(count === gLength - 1) ? delimiter = '' : ',';
 				position = gradient.position / 100;
 				$(gString).append( generator.createProp('color-stop(' + position + ',' + '#' + gradient.color + ')', delimiter, true) );
 				
@@ -221,7 +238,7 @@
 			
 			count = 0;
 			$.each(gradients, function(index, gradient){
-				(count === gLength) ? delimiter = '' : ',';
+				(count === gLength - 1) ? delimiter = '' : delimiter = ',';
 				$(gString).append(generator.createProp('#' + gradient.color + ' ' + gradient.position + '%', delimiter, true) );
 				count++;
 			});
