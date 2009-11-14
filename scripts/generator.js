@@ -82,13 +82,8 @@
 		* Retrieves the color sent from ColorPicker plugin
 		* and set's the swatch's color accordingly
 		*/
-		retrieveColor : function (hsb, hex, rgb) {
-			var color = hex;
-			var _thisSwatch = swatch.getCurrentSwatch();
-
-			_thisSwatch.color = color;
-			$('#' + _thisSwatch).find('a').css('background-color', '#' + color);
-
+		retrieveColor : function (hsb, hex, rgb) {			
+			swatch.setColor(hex);
 			generator.setGradient();
 		},
 		
