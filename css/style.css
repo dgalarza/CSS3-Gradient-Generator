@@ -38,8 +38,9 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 
 #info-panel {
 	margin: 0 10px 30px 10px;
-	padding-bottom: 50px;
+	padding: 50px 0;
 	border-bottom: 2px solid #1E1E1E;
+	border-top: 2px solid #1E1E1E;
 	float: left;
 }
 
