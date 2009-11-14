@@ -218,7 +218,19 @@ cssGradient.swatch = (function () {
 			$swatchControls.find('.swatch-slider').slider('option', 'value', value);			
 			palette[currentSwatch].position = value;			
 		}
-	}
+	};
+	
+	/**
+	* Return the count of how many colors are in our color palette at any given time
+	*/
+	var getPaletteLength = function () {
+		var count = 0;
+		$.each(palette, function() {
+			count++;
+		});
+		
+		return count;
+	};
 	
 	// Return the Public API for color swatches
 	return {
@@ -229,7 +241,8 @@ cssGradient.swatch = (function () {
 		
 		// Accessor methods
 		'getCurrentSwatch' : function () { return currentSwatch; },
-		'getPalette' : function () { return palette; }
+		'getPalette' : function () { return palette; },
+		'getPaletteLength' : getPaletteLength
 	};
 	
 })();
