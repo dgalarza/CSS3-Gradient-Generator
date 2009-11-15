@@ -85,6 +85,12 @@
 			
 			$swatchControls.find('.slider-input input[type=text]').bind('keyup', generator.setGradient);	
 			
+			// On swatch click, set the color picker to the color of the swatch
+			$('.swatch').live('click', function(){
+				var color = swatch.getSwatchColor();
+				generator.picker.ColorPickerSetColor(color);
+			});
+			
 			generator.setGradient();
 		},
 				
@@ -92,9 +98,11 @@
 		* Retrieves the color sent from ColorPicker plugin
 		* and set's the swatch's color accordingly
 		*/
-		retrieveColor : function (hsb, hex, rgb) {			
-			swatch.setColor(hex);
-			generator.setGradient();
+		retrieveColor : function (hsb, hex, rgb) {
+			if(swatch.getPaletteLength() > 0) {
+				swatch.setColor(rgb);
+				generator.setGradient();
+			}
 		},
 		
 		/**
@@ -126,7 +134,8 @@
 			*/
 			if(gCount === 1) {
 				for(name in palette) {
-					return '#' + palette[name].color;
+					var color = palette[name].color;
+					return 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')';
 				}
 			}			
 				
@@ -143,7 +152,7 @@
 			gradientString += ',';
 				 
 			$.each(palette, function (index, obj) {
-				gradientData = gradientData + '#' + obj.color + ' ' + obj.position + '%,';
+				gradientData = gradientData + 'rgb(' + obj.color.r + ',' + obj.color.g + ',' + obj.color.b + ')' + obj.position + '%,';
 			});
 			
 			gradientString = gradientString + gradientData;
@@ -161,12 +170,15 @@
 				gradientData = '';
 			
 			var palette = swatch.getPalette(),
-				percent;
+				pLength = palette.length,
+				percent, obj;
+			
+			for(var i=0; i<pLength; i++) {
+				obj = palette[i];
 				
-			$.each(palette, function (index, obj) {
 				percent = (obj.position / 100);
-				gradientData = gradientData + 'color-stop(' + percent + ', #' + obj.color + '),';
-			});
+				gradientData = gradientData + 'color-stop(' + percent + ', rgb(' + obj.color.r  + ',' + obj.color.g + ',' + obj.color.b + ')),';
+			}
 			
 			gradientString = gradientString + gradientData;
 			gradientString = gradientString.substr(0, gradientString.length - 1) + ')';
@@ -211,18 +223,17 @@
 			
 			//Loop through each gradient color
 			var delimiter = ',',
-				gLength = swatch.getPaletteLength(),
-				count = 0,
-				position;
+				pLength = swatch.getPaletteLength(),
+				position, gradient;
 			
-			$.each(gradients, function(index, gradient) {
-				(count === gLength - 1) ? delimiter = '' : ',';
-				position = gradient.position / 100;
-				$(gString).append( generator.createProp('color-stop(' + position + ',' + '#' + gradient.color + ')', delimiter, true) );
+			for(var i=0; i<pLength; i++) {
+				(i === pLength - 1) ? delimiter = '' : ',';
+				gradient = gradients[i];
 				
-				count++;
-			});			
-			
+				position = gradient.position / 100;
+				$(gString).append( generator.createProp('color-stop(' + position + ',' + 'rgb(' + gradient.color.r + ',' + gradient.color.g + ',' + gradient.color.b + '))', delimiter, true) );
+			}		
+
 			$(gString).append(generator.createProp(')', '', false));
 			
 			// Handle Moz String
@@ -236,12 +247,11 @@
 				.append( generator.createProp('-moz-' + gProps.type + '-gradient('), '', false)
 				.append( generator.createProp(gPosition, ',', true));
 			
-			count = 0;
-			$.each(gradients, function(index, gradient){
-				(count === gLength - 1) ? delimiter = '' : delimiter = ',';
-				$(gString).append(generator.createProp('#' + gradient.color + ' ' + gradient.position + '%', delimiter, true) );
-				count++;
-			});
+			for(var i=0; i<pLength; i++) {
+				(i === pLength - 1) ? delimiter = '' : delimiter = ',';
+				gradient = gradients[i];
+				$(gString).append(generator.createProp('rgb(' + gradient.color.r + ',' + gradient.color.g + ',' + gradient.color.b +') ' + gradient.position + '%', delimiter, true) );
+			}
 			
 			$(gString).append(generator.createProp(')', '', false));				
 		},
