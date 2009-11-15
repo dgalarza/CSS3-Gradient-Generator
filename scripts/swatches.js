@@ -15,7 +15,7 @@ if(typeof cssGradient === 'undefined') {
 cssGradient.swatch = (function () {
 	
 	// Hold our color swatch palette here
-	var palette = {};
+	var palette = [];
 	
 	// Hold a count of how many swatches were created with our pallete for ID names
 	var swatchCount = 0;
@@ -24,7 +24,7 @@ cssGradient.swatch = (function () {
 	var $container;
 	
 	// Hold our currently selected swatch ID here
-	var currentSwatch = 'swatch-1';
+	var currentSwatch = 0;
 	
 	// Hold the swatch controls
 	var $swatchControls = $('#swatch-controls');
@@ -35,8 +35,22 @@ cssGradient.swatch = (function () {
 		$container = $('#color-swatches');
 		
 		//Set up the intial swatches
-		setupSwatch('swatch-1', {'color' : '23adad', 'position': 12});
-		setupSwatch('swatch-2', {'color' : '2e2326', 'position' : 77});
+		setupSwatch('swatch-1', {
+			'color' : {
+				'r' : 81,
+				'g' : 92,
+				'b' : 84
+			},
+			'position': 12
+		});
+		setupSwatch('swatch-2', {
+			'color' : {
+				'r' : 1,
+				'g' : 137,
+				'b' : 205
+			}, 
+			'position' : 77
+		});
 		
 		//Set up the click handler for add swatch
 		$('#add-swatch').click(function(e){
@@ -60,7 +74,7 @@ cssGradient.swatch = (function () {
 		$swatchControls.find('.remove-trigger').click(removeSwatch);
 		
 		// Reset our current swatch to swatch-1
-		currentSwatch = 'swatch-1';
+		currentSwatch = 0;
 		$('#swatch-1').click();
 	};
 	
@@ -70,7 +84,9 @@ cssGradient.swatch = (function () {
 		// Update swatchCount
 		swatchCount++;
 		
-		var swatchID = swatchCount;
+		var swatchID = swatchCount,
+			paletteLength = palette.length,
+			lastSwatch = palette[paletteLength - 1];
 		
 		// Setup our new swatch
 		$newSwatch
@@ -80,8 +96,19 @@ cssGradient.swatch = (function () {
 		
 		$container.append($newSwatch);
 		
-		setupSwatch('swatch-' + swatchID);
+		if(lastSwatch) {
+			var swatchConfig = {
+				color : getUpdatedHue(lastSwatch.color),
+				position : getNextPosition(lastSwatch.position)
+			};
+			
+			setupSwatch('swatch-' + swatchID, swatchConfig);
+		} else {
+			setupSwatch('swatch-' + swatchID);
+		}
 		
+		$newSwatch.click();
+				
 	};
 	
 	/**
@@ -93,7 +120,15 @@ cssGradient.swatch = (function () {
 	* @param {Object} | Configuration parameters for the object (Color and position)
 	*/
 	var setupSwatch = function (element, config) {
-		var config = config || {'color' : '000000', 'position' : 0};
+		var config = config || {
+			'color' : {
+				'r' : 0,
+				'g' : 0,
+				'b' : 0
+			},
+			'position' : 0
+		};
+		
 		var $_thisSwatch = $('#' + element);
 		$_thisSwatch.click(swatchClick);
 	
@@ -101,19 +136,20 @@ cssGradient.swatch = (function () {
 		swatchCount++;
 		
 		//Set up a new swatch object
-		palette[element] = {
+		palette.push({
 			'color' : config.color,
 			'id' : element,
 			'position' : config.position
-		};
+		});
+		
+		
+		//Set up the swatches color
+		$_thisSwatch.find('a').css('background-color', 'rgb(' + config.color.r + ',' + config.color.g + ',' + config.color.b + ')');
+		
+		currentSwatch = palette.length-1;
 		
 		// Update the slider
 		updateSlider(config.position);
-		
-		//Set up the swatches color
-		$_thisSwatch.find('a').css('background-color', '#' + config.color);
-		
-		currentSwatch = element;		
 	};
 	
 	/**
@@ -122,29 +158,21 @@ cssGradient.swatch = (function () {
 	*
 	* Once it is removed, the gradient sample is updated to show this.
 	*/
-	removeSwatch = function(e) {
+	var removeSwatch = function(e) {
 		e.preventDefault();
-
-		// Remove the swatch from our palette
-		delete palette[currentSwatch];
-		
-		var swatches = $container.find('.swatch'),
-			swatchesLength = swatches.length,
-			swatchIndex = 0;
 			
-		for(var i=0; i<swatchesLength; i++) {
-			if(swatches[i].id === currentSwatch) swatchIndex = i;
-		}
-		
 		var nextIndex;
-		swatchIndex === 0 ? nextIndex = 1 : nextIndex = swatchIndex - 1;
+		currentSwatch === 0 ? nextIndex = 1 : nextIndex = currentSwatch - 1;
 				
 		// Remove the swatch from the page
-		$container.find('#' + currentSwatch).remove();
+		$container.find('#' + palette[currentSwatch].id).remove();
+		
+		// Remove the swatch from our palette
+		palette.remove(currentSwatch);
 		
 		// Set our current selected swatch after removing this swatch
-		var nextSwatch = swatches[nextIndex];
-		$(nextSwatch).click();		
+		var nextSwatch = palette[nextIndex];
+		if(nextSwatch) $('#' + nextSwatch.id).click();		
 	};
 	
 	/**
@@ -152,7 +180,7 @@ cssGradient.swatch = (function () {
 	*/
 	var swatchClick = function (e) {
 		e.preventDefault();
-		currentSwatch = this.id;
+		currentSwatch = findSwatch(this.id);
 
 		$container.find('.selected-swatch').removeClass('selected-swatch');
 		$(this).addClass('selected-swatch');
@@ -166,7 +194,6 @@ cssGradient.swatch = (function () {
 	*/
 	var updateSlider = function() {
 		var _thisSwatch = palette[currentSwatch];
-		
 		$swatchControls.find('.swatch-slider')
 			.slider('option', 'value', _thisSwatch.position);
 			
@@ -179,8 +206,10 @@ cssGradient.swatch = (function () {
 	* @param {String} Color for swatch
 	*/
 	var setColor = function(color) {
-		palette[currentSwatch].color = color;
-		$('#' + currentSwatch).find('a').css('background-color', '#' + color);
+		var current = palette[currentSwatch]
+			current.color = color;
+		
+		$('#' + current.id).find('a').css('background-color', 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')');
 	};
 	
 	/**
@@ -219,18 +248,43 @@ cssGradient.swatch = (function () {
 			palette[currentSwatch].position = value;			
 		}
 	};
+		
+	/**
+	* Find a specific swatch in our palette
+	*/
+	var findSwatch = function(swatchID) {
+		for(var i=0; i<palette.length; i++) {
+			if(palette[i].id === swatchID) return i;
+		}
+		
+		return false;
+	};
 	
 	/**
-	* Return the count of how many colors are in our color palette at any given time
+	* Take a color code and get a darker color
 	*/
-	var getPaletteLength = function () {
-		var count = 0;
-		$.each(palette, function() {
-			count++;
-		});
-		
-		return count;
+	var getUpdatedHue = function (color) {
+		return {
+			'r' : nextInRange(color.r),
+			'g' : nextInRange(color.g),
+			'b' : nextInRange(color.b)
+		};
 	};
+	
+	/**
+	* Get the next color in range
+	*/
+	var nextInRange = function (color) {
+		if(color + 10 <= 255) {
+			return color + 10;
+		}
+		return color;
+	};
+	
+	var getNextPosition = function (position) {
+		if(position + 10 <= 100) return position + 10;
+		return position;
+	}
 	
 	// Return the Public API for color swatches
 	return {
@@ -242,7 +296,8 @@ cssGradient.swatch = (function () {
 		// Accessor methods
 		'getCurrentSwatch' : function () { return currentSwatch; },
 		'getPalette' : function () { return palette; },
-		'getPaletteLength' : getPaletteLength
+		'getPaletteLength' : function () { return palette.length; },
+		'getSwatchColor' : function () { return palette[currentSwatch].color; }
 	};
 	
 })();
