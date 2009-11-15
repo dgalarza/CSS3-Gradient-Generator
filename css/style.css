@@ -86,7 +86,7 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	padding: 2px;
 	border: 1px solid #CCCCCC;
 	background-color: #999799;
-	opacity: 0.75;
+	opacity: 0.50;
 	-webkit-transition: opacity 1s linear;
 	list-style: none;
 }
