@@ -54,9 +54,8 @@
 		* Let's set everything up
 		*/
 		init : function () {
-			var $selectWrapper = $('.select-wrapper'),
-				$swatchControls = $('#swatch-controls');
-			
+			var $selectWrapper = $('.select-wrapper');
+						
 			// Point to the swatch API and initialize it right away
 			swatch = cssGradient.swatch;
 			swatch.init();		
@@ -78,19 +77,19 @@
 			$selectWrapper.find('input[type=text]').keyup(generator.selectCustomChange);
 						
 			// Update our gradient whenever the slide is used
-			$swatchControls.find('.swatch-slider').bind('slidechange slide', generator.setGradient);
+			$('#swatch-slider').bind('slidechange slide', generator.setGradient);
 			
 			// Extend the remove swatch click handler to update gradient code on new gradient
-			$swatchControls.find('.remove-trigger').click(generator.setGradient);
+			$('#remove-trigger').click(generator.setGradient);
 			
 			// Bind the slider manual text input key up detection to update gradient on value change
-			$swatchControls.find('.slider-input input[type=text]').bind('keyup', generator.setGradient);	
+			$('#slider-input input[type=text]').bind('keyup', generator.setGradient);	
 						
 			// Extend add swatch button click handler to update gradient code on new gradient
 			$('#add-swatch').click(generator.setGradient);
 						
 			// On swatch click, set the color picker to the color of the swatch
-			$('.swatch').live('click', function(){
+			$('#color-swatches .swatch').live('click', function(){
 				var color = swatch.getSwatchColor();
 				generator.picker.ColorPickerSetColor(color);
 			});

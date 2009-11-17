@@ -60,18 +60,18 @@ cssGradient.swatch = (function () {
 		});
 		
 		// Set up the event handler for keyup detection on manual gradient position
-		$('.slider-input input').bind('keyup', slideInputUpdate);
+		$('#slider-input input[type=text]').bind('keyup', slideInputUpdate);
 		
 		// Setup the jQuery live event handler for click events on swatches
-		$('.swatch').live('click', swatchClick);
+		$('#color-swatches li.swatch').live('click', swatchClick);
 		
 		// Setup the slider with methods relating to swatches
-		$swatchControls.find('.swatch-slider').slider({
+		$swatchControls.find('#swatch-slider').slider({
 			change : slideChange,
 			slide : slideChange,
 		});
 		
-		$swatchControls.find('.remove-trigger').click(removeSwatch);
+		$swatchControls.find('#remove-trigger').click(removeSwatch);
 		
 		// Reset our current swatch to swatch-1
 		currentSwatch = 0;
@@ -200,10 +200,8 @@ cssGradient.swatch = (function () {
 	*/
 	var updateSlider = function() {
 		var _thisSwatch = palette[currentSwatch];
-		$swatchControls.find('.swatch-slider')
-			.slider('option', 'value', _thisSwatch.position);
-			
-		$swatchControls.find('.slider-input input[type=text]').attr('value', _thisSwatch.position);
+		$('#swatch-slider').slider('option', 'value', _thisSwatch.position);
+		$('#slider-input input[type=text]').attr('value', _thisSwatch.position);
 	};
 	
 	/**
@@ -238,7 +236,7 @@ cssGradient.swatch = (function () {
 	var slideChange = function (e, ui) {
 		if(palette[currentSwatch]) {
 			palette[currentSwatch].position = ui.value;
-			$swatchControls.find('.slider-input input[type=text]').attr('value', ui.value);
+			$('#slider-input input[type=text]').attr('value', ui.value);
 		}
 	};
 	
@@ -254,7 +252,7 @@ cssGradient.swatch = (function () {
 		
 		//Make sure our value is within the limits before updating
 		if(value >=0 && value <= 100) {
-			$swatchControls.find('.swatch-slider').slider('option', 'value', value);			
+			$('#swatch-slider').slider('option', 'value', value);			
 			palette[currentSwatch].position = value;			
 		}
 	};
