@@ -112,7 +112,7 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	clear: both;
 }
 
-#swatch-controls .remove-trigger {
+#swatch-controls #remove-trigger {
 	width: 20px;
 	height: 25px;
 	margin-right: 10px;
@@ -123,22 +123,22 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	float: left;
 }
 
-#swatch-controls .swatch-slider {
+#swatch-controls #swatch-slider {
 	width: 200px;
 	height: 15px;
 	margin: 7px 0;
 	float: left;
 }
 
-#swatch-controls .swatch-slider .ui-slider-handle {
+#swatch-controls #swatch-slider .ui-slider-handle {
 	top: -2px;
 }
 
-#swatch-controls .slider-input {
+#swatch-controls #slider-input {
 	margin-top: 5px;
 	float: right;
 }
-#swatch-controls .slider-input input{
+#swatch-controls #slider-input input{
 	width: 25px;
 }
 
