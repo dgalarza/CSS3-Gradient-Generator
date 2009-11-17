@@ -78,7 +78,11 @@ cssGradient.swatch = (function () {
 		$('#swatch-1').click();
 	};
 	
+	/**
+	* Creates a new color swatch on the page and in our palette.
+	*/
 	var createSwatch = function () {
+		// Clone our template swatch
 		var $newSwatch = $('#swatch-template').clone(true);
 		
 		// Update swatchCount
@@ -94,8 +98,10 @@ cssGradient.swatch = (function () {
 			.attr('rel', 'swatch-' + swatchID)
 			.removeClass('hide');
 		
+		// Append swatch to page
 		$container.append($newSwatch);
 		
+		// If there is a previous swatch, let's progressively update this one
 		if(lastSwatch) {
 			var swatchConfig = {
 				color : getUpdatedHue(lastSwatch.color),
@@ -107,8 +113,8 @@ cssGradient.swatch = (function () {
 			setupSwatch('swatch-' + swatchID);
 		}
 		
+		// Click the swatch, setting it as the current swatch
 		$newSwatch.click();
-				
 	};
 	
 	/**
@@ -165,7 +171,7 @@ cssGradient.swatch = (function () {
 		currentSwatch === 0 ? nextIndex = 1 : nextIndex = currentSwatch - 1;
 				
 		// Remove the swatch from the page
-		$container.find('#' + palette[currentSwatch].id).remove();
+		$('#' + palette[currentSwatch].id).remove();
 		
 		// Remove the swatch from our palette
 		palette.remove(currentSwatch);
@@ -255,6 +261,10 @@ cssGradient.swatch = (function () {
 		
 	/**
 	* Find a specific swatch in our palette
+	*
+	* @param {String} The ID of the string we're looking for
+	* @return {Int} Index of the swatch if found
+	* @return {Bool} False if not found
 	*/
 	var findSwatch = function(swatchID) {
 		for(var i=0; i<palette.length; i++) {
@@ -266,6 +276,9 @@ cssGradient.swatch = (function () {
 	
 	/**
 	* Take a color code and get a darker color
+	* 
+	* @param {Object} Some color object to build from
+	* @return {Object} Updated Color Object
 	*/
 	var getUpdatedHue = function (color) {
 		return {
@@ -276,23 +289,22 @@ cssGradient.swatch = (function () {
 	};
 	
 	/**
-	* Get the next color in range
+	* Get the next RGB value based on a previous value
+	* passed in.
+	*
+	* @param {Int} The value for the RGB segment
+	* @return {Int} Increased color value
 	*/
-	var nextInRange = function (color) {
-		var dif = 255 - color;
-		
-		if(dif <= 0) {
-			return 255;
-		}
-		
-		var delta = dif / 1000;
-		var newColor = Math.ceil(color * delta) + color;
-		
-		if(newColor > 255) return 255;
-		
-		return newColor;
+	var nextInRange = function (color) {		
+		return Math.ceil(color * 0.25) + color; 
 	};
 	
+	/**
+	* Return a new progressive position for the a color
+	* based off of some previous position value
+	*
+	* @param {Int} Previous Color Position
+	*/
 	var getNextPosition = function (position) {
 		var dif = 100 - position;
 		
