@@ -54,9 +54,14 @@
 		* Let's set everything up
 		*/
 		init : function () {
+			var $selectWrapper = $('.select-wrapper'),
+				$swatchControls = $('#swatch-controls');
+			
+			// Point to the swatch API and initialize it right away
 			swatch = cssGradient.swatch;
 			swatch.init();		
 			
+			// Set up our ColorPicker
 			generator.picker.ColorPicker({
 				flat: true,
 				onChange : generator.retrieveColor,
@@ -64,27 +69,26 @@
 			.ColorPickerSetColor('#23adad')
 			.mouseup(generator.updateGradientString);
 			
-			//Set up our direction select options
-			$('.select-wrapper select').change(generator.selectChange);
-			$('.select-wrapper input[type=text]').keyup(generator.selectCustomChange);
+			// Setup the direction option event handlers
 			
-			generator.currentSwatch = $('#swatch-1');
+			// Set the jump menu event handlers
+			$selectWrapper.find('select').change(generator.selectChange);
 			
-			// Extend the swatch methods which are attached to the slider with generator methods
-			var $swatchControls = $('#swatch-controls');
-
-			$swatchControls.find('.swatch-slider')
-				.bind('slidechange', generator.setGradient)
-				.bind('slide', generator.setGradient);
-			
-			// Extend add swatch button click handler to update gradient code on new gradient
-			$('#add-swatch').click(generator.setGradient);
+			// Set up the manual value input handler for gradient direction
+			$selectWrapper.find('input[type=text]').keyup(generator.selectCustomChange);
+						
+			// Update our gradient whenever the slide is used
+			$swatchControls.find('.swatch-slider').bind('slidechange slide', generator.setGradient);
 			
 			// Extend the remove swatch click handler to update gradient code on new gradient
-			$('#swatch-controls .remove-trigger').click(generator.setGradient);
+			$swatchControls.find('.remove-trigger').click(generator.setGradient);
 			
+			// Bind the slider manual text input key up detection to update gradient on value change
 			$swatchControls.find('.slider-input input[type=text]').bind('keyup', generator.setGradient);	
-			
+						
+			// Extend add swatch button click handler to update gradient code on new gradient
+			$('#add-swatch').click(generator.setGradient);
+						
 			// On swatch click, set the color picker to the color of the swatch
 			$('.swatch').live('click', function(){
 				var color = swatch.getSwatchColor();
@@ -97,6 +101,10 @@
 		/**
 		* Retrieves the color sent from ColorPicker plugin
 		* and set's the swatch's color accordingly
+		*
+		* @param {Object} HSB Color syntax
+		* @param {String} Hex Color Notation
+		* @param {Object} RGB Color Syntax
 		*/
 		retrieveColor : function (hsb, hex, rgb) {
 			if(swatch.getPaletteLength() > 0) {
@@ -107,12 +115,15 @@
 		
 		/**
 		* Run's through the gradient's properties and applies
-		* the gradient to our live button sample
+		* the gradient to our live button sample and updates the
+		* gradient string sample
 		*/
 		setGradient : function () {
+			// Apply style for live sample
 			generator.sample.css('background', generator.generateWebkitGradient());
 			generator.sample.css('background', generator.generateMozGradient());
 			
+			// Update string
 			generator.updateGradientString();
 		},
 		
@@ -150,7 +161,7 @@
 			
 			gradientProps.yStart === gradientProps.yEnd ? gradientString += 'center' : gradientString += gradientProps.yStart;
 			gradientString += ',';
-				 
+			
 			$.each(palette, function (index, obj) {
 				gradientData = gradientData + 'rgb(' + obj.color.r + ',' + obj.color.g + ',' + obj.color.b + ')' + obj.position + '%,';
 			});
