@@ -219,7 +219,9 @@ cssGradient.swatch = (function () {
 	* @param {String} Position value
 	*/
 	var setPosition = function(swatch, position) {
-		palette[swatch].position = position;
+		if(palette[swatch]) {
+			palette[swatch].position = position;
+		}
 	};
 	
 	/**
@@ -227,9 +229,11 @@ cssGradient.swatch = (function () {
 	* position of the color in the gradient live, while the user
 	* adjusts the slider.
 	*/
-	var slideChange = function (e, ui) {			
-		palette[currentSwatch].position = ui.value;
-		$swatchControls.find('.slider-input input[type=text]').attr('value', ui.value);
+	var slideChange = function (e, ui) {
+		if(palette[currentSwatch]) {
+			palette[currentSwatch].position = ui.value;
+			$swatchControls.find('.slider-input input[type=text]').attr('value', ui.value);
+		}
 	};
 	
 	/**
@@ -275,15 +279,29 @@ cssGradient.swatch = (function () {
 	* Get the next color in range
 	*/
 	var nextInRange = function (color) {
-		if(color + 10 <= 255) {
-			return color + 10;
+		var dif = 255 - color;
+		
+		if(dif <= 0) {
+			return 255;
 		}
-		return color;
+		
+		var delta = dif / 1000;
+		var newColor = Math.ceil(color * delta) + color;
+		
+		if(newColor > 255) return 255;
+		
+		return newColor;
 	};
 	
 	var getNextPosition = function (position) {
-		if(position + 10 <= 100) return position + 10;
-		return position;
+		var dif = 100 - position;
+		
+		if(dif <= 0) {
+			return 100;
+		}
+		
+		var delta = dif / 100;
+		return Math.ceil(position * delta) + position;
 	}
 	
 	// Return the Public API for color swatches
