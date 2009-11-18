@@ -293,8 +293,13 @@ cssGradient.swatch = (function () {
 	* @param {Int} The value for the RGB segment
 	* @return {Int} Increased color value
 	*/
-	var nextInRange = function (color) {		
-		return Math.ceil(color * 0.25) + color; 
+	var nextInRange = function (color) {				
+		var delta = Math.ceil(255 / color) / 10;		
+		var newColor = Math.ceil(delta * color) + color;
+		
+		if(newColor > 255) return 255;
+		
+		return newColor;
 	};
 	
 	/**
