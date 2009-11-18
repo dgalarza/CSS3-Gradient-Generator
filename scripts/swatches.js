@@ -35,6 +35,7 @@ cssGradient.swatch = (function () {
 		$container = $('#color-swatches');
 		
 		//Set up the intial swatches
+		/*
 		setupSwatch('swatch-1', {
 			'color' : {
 				'r' : 81,
@@ -51,7 +52,7 @@ cssGradient.swatch = (function () {
 			}, 
 			'position' : 77
 		});
-		
+		*/
 		//Set up the click handler for add swatch
 		$('#add-swatch').click(function(e){
 			e.preventDefault();
@@ -75,7 +76,7 @@ cssGradient.swatch = (function () {
 		
 		// Reset our current swatch to swatch-1
 		currentSwatch = 0;
-		$('#swatch-1').click();
+		//$('#swatch-1').click();
 	};
 	
 	/**
@@ -320,15 +321,17 @@ cssGradient.swatch = (function () {
 	*
 	* @param {Int} Previous Color Position
 	*/
-	var getNextPosition = function (position) {
-		var dif = 100 - position;
-		
-		if(dif <= 0) {
-			return 100;
+	var getNextPosition = function (position) {		
+		if(position === 0) {
+			position++;
 		}
 		
-		var delta = dif / 100;
-		return Math.ceil(position * delta) + position;
+		var delta = Math.ceil(100 / position) / 1.5;
+		var newPosition = Math.ceil(delta * position) + position;
+		
+		if(newPosition > 100) return 100;
+		
+		return newPosition;
 	}
 	
 	// Return the Public API for color swatches
@@ -338,6 +341,7 @@ cssGradient.swatch = (function () {
 		// Mutator Methods
 		'setColor' : setColor,
 		'createSwatch' : createSwatch,
+		'emptyPalette' : function () { return false; },
 		
 		// Accessor methods
 		'getCurrentSwatch' : function () { return currentSwatch; },
