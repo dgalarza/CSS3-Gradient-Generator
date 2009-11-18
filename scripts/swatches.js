@@ -80,8 +80,10 @@ cssGradient.swatch = (function () {
 	
 	/**
 	* Creates a new color swatch on the page and in our palette.
+	*
+	* @param {Object} (Optional) Set of configuration properties for this swatch
 	*/
-	var createSwatch = function () {
+	var createSwatch = function (config) {
 		// Clone our template swatch
 		var $newSwatch = $('#swatch-template').clone(true);
 		
@@ -101,15 +103,21 @@ cssGradient.swatch = (function () {
 		// Append swatch to page
 		$container.append($newSwatch);
 		
+		// Use a config object if one was sent
+		if(config) {
+			setupSwatch('swatch-' + swatchID, config);
+		} 
 		// If there is a previous swatch, let's progressively update this one
-		if(lastSwatch) {
+		else if(lastSwatch) {
 			var swatchConfig = {
 				color : getUpdatedHue(lastSwatch.color),
 				position : getNextPosition(lastSwatch.position)
 			};
 			
 			setupSwatch('swatch-' + swatchID, swatchConfig);
-		} else {
+		} 
+		// Otherwise, just set up the swatch with the defaults
+		else {
 			setupSwatch('swatch-' + swatchID);
 		}
 		
@@ -293,10 +301,14 @@ cssGradient.swatch = (function () {
 	* @param {Int} The value for the RGB segment
 	* @return {Int} Increased color value
 	*/
-	var nextInRange = function (color) {				
-		var delta = Math.ceil(255 / color) / 10;		
-		var newColor = Math.ceil(delta * color) + color;
+	var nextInRange = function (color) {
+		if(color === 0) {
+			color++;
+		}
+					
+		var delta = Math.ceil(255 / color) / 10;
 		
+		var newColor = Math.ceil(delta * color) + color;
 		if(newColor > 255) return 255;
 		
 		return newColor;
@@ -325,6 +337,7 @@ cssGradient.swatch = (function () {
 		
 		// Mutator Methods
 		'setColor' : setColor,
+		'createSwatch' : createSwatch,
 		
 		// Accessor methods
 		'getCurrentSwatch' : function () { return currentSwatch; },
