@@ -60,18 +60,8 @@
 			swatch = cssGradient.swatch;
 			swatch.init();		
 			
-			/*
-			* Create our initial swatch with a random color, we will make use of the progressive
-			* color and position generators in the swatch API to create a gradient based off of our
-			* first random color
-			*/
-			swatch.createSwatch({
-				'color' : generator.createRandomColor(),
-				'position' : 25
-			});
-			
-			// Create a swatch, allowing the progression methods to take care of creating a nice gradient
-			swatch.createSwatch();
+			// Create initial radom gradient
+			randomizer.generateRandomGradient();
 			
 			// Set up our ColorPicker
 			generator.picker.ColorPicker({
@@ -105,6 +95,14 @@
 			$('#color-swatches .swatch').live('click', function(){
 				var color = swatch.getSwatchColor();
 				generator.picker.ColorPickerSetColor(color);
+			});
+			
+			// Apply our randomize link event
+			$('#randomize-trigger').click(function (e) {
+				e.preventDefault();
+				swatch.emptyPalette();
+				randomizer.generateRandomGradient();
+				generator.setGradient();
 			});
 			
 			generator.setGradient();
@@ -345,6 +343,33 @@
 			
 			generator.setGradient();
 			generator.updateGradientString();
+		}
+		
+	};
+	
+	var randomizer = {
+	
+		/**
+		* Generates a random gradient to apply
+		*/
+		generateRandomGradient : function () {
+			// Randomly determine how many colors to use in our gradient, applying 2-4 color swatches
+			var swatchCount;
+			do {
+				swatchCount = Math.floor(4 * Math.random());
+			} while(swatchCount <= 1);
+			
+			
+			// Create our first gradient
+			swatch.createSwatch({
+				'color' : randomizer.createRandomColor(),
+				'position' : randomizer.generateRandomPosition()
+			});
+			
+			// Now loop through and create the rest of the swatches that will make up the gradient
+			for(var i=1; i<swatchCount; i++) {
+				swatch.createSwatch();
+			}
 		},
 		
 		/**
@@ -355,17 +380,28 @@
 		generateRandomRGB : function () {
 			return Math.floor(255 * Math.random());
 		},
+	
+		/**
+		* Generate a random Position value
+		* between 1-50
+		*
+		* @return {Int}
+		*/
+		generateRandomPosition : function () {
+			return Math.floor(50 * Math.random());
+		},
 		
 		/**
 		* Generate a randomized RGB color object
 		*/
 		createRandomColor : function () {
 			return {
-				'r' : generator.generateRandomRGB(),
-				'g' : generator.generateRandomRGB(),
-				'b' : generator.generateRandomRGB()
+				'r' : randomizer.generateRandomRGB(),
+				'g' : randomizer.generateRandomRGB(),
+				'b' : randomizer.generateRandomRGB()
 			};
 		}
+		
 	};
 	
 	$(document).ready(function () {
