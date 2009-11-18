@@ -302,18 +302,24 @@ cssGradient.swatch = (function () {
 	*
 	* @param {Int} Previous Color Position
 	*/
-	var getNextPosition = function (position) {		
-		if(position === 0) {
-			position++;
-		}
+	var getNextPosition = function (position) {			
+		var diff =  100 - position;
+		var delta = Math.ceil(diff * 0.5);
 		
-		var delta = Math.ceil(100 / position) / 1.5;
-		var newPosition = Math.ceil(delta * position) + position;
+		return delta + position;
 		
-		if(newPosition > 100) return 100;
+		return position;
+	};
+	
+	/**
+	* Dumps all of the existing colors in our palette, removing all swatches
+	*/
+	var emptyPalette = function () {
+		// Clear the palette array
+		palette = [];
 		
-		return newPosition;
-	}
+		$('#color-swatches .swatch').remove();
+	};
 	
 	// Return the Public API for color swatches
 	return {
@@ -322,7 +328,7 @@ cssGradient.swatch = (function () {
 		// Mutator Methods
 		'setColor' : setColor,
 		'createSwatch' : createSwatch,
-		'emptyPalette' : function () { return false; },
+		'emptyPalette' : emptyPalette,
 		
 		// Accessor methods
 		'getCurrentSwatch' : function () { return currentSwatch; },
