@@ -343,3 +343,8 @@ iframe {
 #generator-news p + p {
 	margin-top: 10px;
 }
+
+#randomize-trigger {
+	float: left;
+	clear: both;
+}
