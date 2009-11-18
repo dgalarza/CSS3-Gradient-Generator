@@ -60,12 +60,17 @@
 			swatch = cssGradient.swatch;
 			swatch.init();		
 			
-			// Generate random initial color
+			/*
+			* Create our initial swatch with a random color, we will make use of the progressive
+			* color and position generators in the swatch API to create a gradient based off of our
+			* first random color
+			*/
 			swatch.createSwatch({
 				'color' : generator.createRandomColor(),
 				'position' : 25
 			});
 			
+			// Create a swatch, allowing the progression methods to take care of creating a nice gradient
 			swatch.createSwatch();
 			
 			// Set up our ColorPicker
