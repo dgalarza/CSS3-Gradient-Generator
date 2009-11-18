@@ -34,25 +34,6 @@ cssGradient.swatch = (function () {
 		//Cache our swatch container up front
 		$container = $('#color-swatches');
 		
-		//Set up the intial swatches
-		/*
-		setupSwatch('swatch-1', {
-			'color' : {
-				'r' : 81,
-				'g' : 92,
-				'b' : 84
-			},
-			'position': 12
-		});
-		setupSwatch('swatch-2', {
-			'color' : {
-				'r' : 1,
-				'g' : 137,
-				'b' : 205
-			}, 
-			'position' : 77
-		});
-		*/
 		//Set up the click handler for add swatch
 		$('#add-swatch').click(function(e){
 			e.preventDefault();
