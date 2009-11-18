@@ -60,6 +60,14 @@
 			swatch = cssGradient.swatch;
 			swatch.init();		
 			
+			// Generate random initial color
+			swatch.createSwatch({
+				'color' : generator.createRandomColor(),
+				'position' : 25
+			});
+			
+			swatch.createSwatch();
+			
 			// Set up our ColorPicker
 			generator.picker.ColorPicker({
 				flat: true,
@@ -332,6 +340,26 @@
 			
 			generator.setGradient();
 			generator.updateGradientString();
+		},
+		
+		/**
+		* Generate random RGB value
+		*
+		* @return {Int}
+		*/
+		generateRandomRGB : function () {
+			return Math.floor(255 * Math.random());
+		},
+		
+		/**
+		* Generate a randomized RGB color object
+		*/
+		createRandomColor : function () {
+			return {
+				'r' : generator.generateRandomRGB(),
+				'g' : generator.generateRandomRGB(),
+				'b' : generator.generateRandomRGB()
+			};
 		}
 	};
 	
