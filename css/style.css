@@ -190,6 +190,7 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
 	color: #FFFFFF;
+	text-shadow: #333333 1px 1px 4px;
 	text-decoration: none;
 	clear: both;
 }
