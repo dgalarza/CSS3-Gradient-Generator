@@ -54,10 +54,6 @@ cssGradient.swatch = (function () {
 		});
 		
 		$swatchControls.find('#remove-trigger').click(removeSwatch);
-		
-		// Reset our current swatch to swatch-1
-		currentSwatch = 0;
-		//$('#swatch-1').click();
 	};
 	
 	/**
