@@ -252,7 +252,7 @@
 				gradient = gradients[i];
 				
 				position = gradient.position / 100;
-				$(gString).append( generator.createProp('color-stop(' + position + ',' + 'rgb(' + gradient.color.r + ',' + gradient.color.g + ',' + gradient.color.b + '))', delimiter, true) );
+				$(gString).append( generator.createProp('color-stop(' + position + ', rgb(' + gradient.color.r + ',' + gradient.color.g + ',' + gradient.color.b + '))', delimiter, true) );
 			}		
 
 			$(gString).append(generator.createProp(')', '', false));
