@@ -354,6 +354,16 @@ dl dd {
 	margin-top: 10px;
 }
 
+#generator-news dl {
+	margin-top: 20px;
+}
+
+#generator-news dd {
+	margin-left: 15px;
+	list-style: disc;
+	display: list-item;
+}
+
 #randomize-trigger {
 	float: left;
 	clear: both;
