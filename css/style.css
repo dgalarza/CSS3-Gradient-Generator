@@ -317,10 +317,19 @@ dl dd {
 /**
 * Digg iFrame Styles
 */
-iframe {
+#digg-wrapper {
+	float: right;
+}
+
+#digg-wrapper iframe {
 	position: relative;
 	top: -48px;
-	right: -474px;
+}
+
+#tweet-status {
+	position: absolute;
+	bottom: 10px;
+	right: -26px;
 }
 
 /**
