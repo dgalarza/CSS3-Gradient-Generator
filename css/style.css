@@ -157,6 +157,15 @@ h4 { font-size: 16px; margin-bottom: 10px; }
 	float: left;
 }
 
+#color-format-select {	
+	margin-bottom: 20px;
+	clear: left;
+}
+
+#color-format-select p { line-height: 21px; }
+
+#color-format-select select { margin-top: 7px; }
+
 #sample-button-container #plain-text {
 	margin-left: 10px;
 	display: block;
@@ -291,7 +300,7 @@ dl dd {
 }
 
 #gradient-direction {
-	margin-bottom: 40px;
+	margin-bottom: 20px;
 	float: left;
 }
 

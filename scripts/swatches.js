@@ -24,7 +24,10 @@ cssGradient.swatch = (function () {
 	var $container;
 	
 	// Hold our currently selected swatch ID here
-	var currentSwatch = 0;
+	var currentSwatch = 0;	
+	
+	// Color Format, default to rgb
+	var colorFormat = 'rgb';
 	
 	// Hold the swatch controls
 	var $swatchControls = $('#swatch-controls');
@@ -32,13 +35,24 @@ cssGradient.swatch = (function () {
 	//Set up the swatch handler
 	var init = function () {
 		//Cache our swatch container up front
-		$container = $('#color-swatches');
+		$container = $('#color-swatches');		
+		
+		// Let's see if the user has a preference for another color format
+		checkCookie();
 		
 		//Set up the click handler for add swatch
 		$('#add-swatch').click(function(e){
 			e.preventDefault();
 			createSwatch();
 			$('#' + currentSwatch).click();
+		});
+		
+		// Set up events for switching color format
+		$('#color-format').change(function (e) {
+			var val = $(this).val();
+						
+			colorFormat = val;			
+			setCookie(val);
 		});
 		
 		// Set up the event handler for keyup detection on manual gradient position
@@ -113,11 +127,7 @@ cssGradient.swatch = (function () {
 	*/
 	var setupSwatch = function (element, config) {
 		var config = config || {
-			'color' : {
-				'r' : 0,
-				'g' : 0,
-				'b' : 0
-			},
+			'color' : getColorTemplate(),
 			'position' : 0
 		};
 		
@@ -242,7 +252,20 @@ cssGradient.swatch = (function () {
 			palette[currentSwatch].position = value;			
 		}
 	};
+	
+	/**
+	* Returns a color template for swatch configuration
+	* based on color format
+	*/
+	var getColorTemplate = function () {
 		
+			{
+				'r' : 0,
+				'g' : 0,
+				'b' : 0
+			},
+	};
+	
 	/**
 	* Find a specific swatch in our palette
 	*
@@ -317,6 +340,50 @@ cssGradient.swatch = (function () {
 		$('#color-swatches .swatch').remove();
 	};
 	
+	/**
+	* Checks to see if the user has a preferred color format
+	* for gradient colors. If so, set it now.
+	*/
+	var checkCookie = function () {
+		var cookie = document.cookie;
+		
+		if(cookie.length === 0) return false;
+		
+		var data = cookie.split('=');
+			
+		// Ensure that the cookie data was not tampered with	
+		if(data[0] !== 'format') return false;
+		var whiteList = ['rgb', 'hex'];
+		
+		var key = data[1];
+		delete data;
+		
+		if( whiteList.indexOf(key) !== -1) {
+			colorFormat = key;
+			
+			// Update the select menu as well
+			$('#color-format option[value=' + key + ']')[0].selected = true;
+			
+		}
+		else {
+			document.cookie = '';
+		}
+	};
+	
+	/**
+	* When the user selects a color format, lets remember it
+	*
+	* @param {String} Color format
+	*/
+	var setCookie = function (format) {
+		var date = new Date();		
+		date.setTime(date.getTime() + ( 730 * 24 * 60 * 60 * 1000 ));
+				
+		var expires = "; expires=" + date.toGMTString();
+		
+		document.cookie = 'format=' + format + expires + "; path=/";
+	};		
+	
 	// Return the Public API for color swatches
 	return {
 		'init' : init,
@@ -327,6 +394,7 @@ cssGradient.swatch = (function () {
 		'emptyPalette' : emptyPalette,
 		
 		// Accessor methods
+		'getColorFormat' : function () { return colorFormat; },
 		'getCurrentSwatch' : function () { return currentSwatch; },
 		'getPalette' : function () { return palette; },
 		'getPaletteLength' : function () { return palette.length; },
