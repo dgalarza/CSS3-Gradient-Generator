@@ -366,7 +366,26 @@ cssGradient.swatch = (function () {
 		
 		if(cookie.length === 0) return false;
 		
-		var data = cookie.split('=');
+		var data = cookie.split(';');
+		var _this, key, val;
+		for (var i=0, len = data.length; i < len; i++) {
+			
+			_this = data[i].split('=');
+			
+			key = _this[0];
+			val = _this[1];
+			
+			if (key === 'format') {
+				if (whiteList.indexOf(val) !== -1) {
+					colorFormat = val;
+					$('#color-format option[value=' + val + ']')[0].selected = true;
+				}
+			}
+			else {
+				setCookie('rgb');
+			}
+			
+		}
 			
 		// Ensure that the cookie data was not tampered with	
 		if(data[0] !== 'format') return false;
