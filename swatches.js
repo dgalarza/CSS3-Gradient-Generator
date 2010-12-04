@@ -375,7 +375,7 @@ cssGradient.swatch = (function () {
 			
 			_this = data[i].split('=');
 			
-			key = _this[0];
+			key = _this[0].replace(/^\s+|\s+$/g,"");
 			val = _this[1];
 			
 			if (key === 'format') {
