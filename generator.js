@@ -16,7 +16,7 @@
 * http://gradients.glrzad.com/
 */
 
-(function () {
+$(function () {
 	
 	var swatch;
 	
@@ -105,7 +105,12 @@
 				generator.setGradient();
 			});
 			
+			$('#color-format').change(function(e) {
+				generator.setGradient()
+			});
+			
 			generator.setGradient();
+						
 		},
 				
 		/**
@@ -118,7 +123,7 @@
 		*/
 		retrieveColor : function (hsb, hex, rgb) {
 			if(swatch.getPaletteLength() > 0) {
-				swatch.setColor(rgb);
+				swatch.setColor(rgb, hex);
 				generator.setGradient();
 			}
 		},
@@ -140,7 +145,7 @@
 		/**
 		* Factory to generate CSS code for Mozilla gradient support
 		*/
-		generateMozGradient : function () {
+		generateMozGradient : function () { 	
 			var gradientProps = generator.gradientProps,
 				gradientString = '-moz-' + gradientProps.type + '-gradient(',
 				gradientData = '';
@@ -155,7 +160,7 @@
 			*/
 			if(gCount === 1) {
 				for(name in palette) {
-					var color = palette[name].color;
+					var color = palette[name].rgb;
 					return 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')';
 				}
 			}			
@@ -173,7 +178,7 @@
 			gradientString += ',';
 			
 			$.each(palette, function (index, obj) {
-				gradientData = gradientData + 'rgb(' + obj.color.r + ',' + obj.color.g + ',' + obj.color.b + ')' + obj.position + '%,';
+				gradientData = gradientData + 'rgb(' + obj.rgb.r + ',' + obj.rgb.g + ',' + obj.rgb.b + ')' + obj.position + '%,';
 			});
 			
 			gradientString = gradientString + gradientData;
@@ -187,7 +192,7 @@
 		*/
 		generateWebkitGradient : function () {
 			var gradientProps = generator.gradientProps,
-				gradientString = '-webkit-gradient(' + gradientProps.type + ',' + generator.fetchGradientStart() + ',' + generator.fetchGradientEnd() + ',',
+				gradientString = 'background: -webkit-gradient(' + gradientProps.type + ',' + generator.fetchGradientStart() + ',' + generator.fetchGradientEnd() + ',',
 				gradientData = '';
 			
 			var palette = swatch.getPalette(),
@@ -196,13 +201,12 @@
 			
 			for(var i=0; i<pLength; i++) {
 				obj = palette[i];
-				
 				percent = (obj.position / 100);
-				gradientData = gradientData + 'color-stop(' + percent + ', rgb(' + obj.color.r  + ',' + obj.color.g + ',' + obj.color.b + ')),';
+				gradientData = gradientData + 'color-stop(' + percent + ', rgb(' + obj.rgb.r  + ',' + obj.rgb.g + ',' + obj.rgb.b + ')),';
 			}
 			
 			gradientString = gradientString + gradientData;
-			gradientString = gradientString.substr(0, gradientString.length - 1) + ')';
+			gradientString = gradientString.substr(0, gradientString.length - 1) + ');';
 		
 			return gradientString;
 		},
@@ -237,7 +241,7 @@
 
 			//Set up the general linear gradient properties
 			$(gString)
-				.append( generator.createProp('-webkit-gradient(', ''))
+				.append( generator.createProp('background: -webkit-gradient(', ''))
 				.append( generator.createProp(gProps.type, ',', true) )
 				.append( generator.createProp(generator.fetchGradientStart(), ',', true))
 				.append( generator.createProp(generator.fetchGradientEnd(), ',', true));
@@ -247,15 +251,22 @@
 				pLength = swatch.getPaletteLength(),
 				position, gradient;
 			
+			var colorFormat = swatch.getColorFormat();
+			var color;
+			
+			
+			//rgb(' + gradient.rgb.r + ',' + gradient.rgb.g + ',' + gradient.rgb.b + '))'
 			for(var i=0; i<pLength; i++) {
 				(i === pLength - 1) ? delimiter = '' : ',';
 				gradient = gradients[i];
-				
 				position = gradient.position / 100;
-				$(gString).append( generator.createProp('color-stop(' + position + ', rgb(' + gradient.color.r + ',' + gradient.color.g + ',' + gradient.color.b + '))', delimiter, true) );
+				
+				color = (colorFormat === 'rgb') ? 'rgb(' + gradient.rgb.r + ',' + gradient.rgb.g + ',' + gradient.rgb.b + ')' : '#' + gradient.hex.toUpperCase();
+
+				$(gString).append( generator.createProp('color-stop(' + position + ', ' + color + ')', delimiter, true) );
 			}		
 
-			$(gString).append(generator.createProp(')', '', false));
+			$(gString).append(generator.createProp(');', '', false));
 			
 			// Handle Moz String
 			var gPosition = '';
@@ -265,16 +276,19 @@
 			gProps.yStart === gProps.yEnd ? gPosition += 'center' : gPosition += gProps.yStart;
 			
 			$(gString)
-				.append( generator.createProp('-moz-' + gProps.type + '-gradient('), '', false)
+				.append( generator.createProp('background: -moz-' + gProps.type + '-gradient('), '', false)
 				.append( generator.createProp(gPosition, ',', true));
 			
 			for(var i=0; i<pLength; i++) {
 				(i === pLength - 1) ? delimiter = '' : delimiter = ',';
 				gradient = gradients[i];
-				$(gString).append(generator.createProp('rgb(' + gradient.color.r + ',' + gradient.color.g + ',' + gradient.color.b +') ' + gradient.position + '%', delimiter, true) );
+				
+				color = (colorFormat === 'rgb') ? 'rgb(' + gradient.rgb.r + ',' + gradient.rgb.g + ',' + gradient.rgb.b + ')' : '#' + gradient.hex.toUpperCase();
+				
+				$(gString).append(generator.createProp(color + ' ' + gradient.position + '%', delimiter, true) );
 			}
 			
-			$(gString).append(generator.createProp(')', '', false));				
+			$(gString).append(generator.createProp(');', '', false));				
 		},
 		
 		/**
@@ -360,9 +374,12 @@
 			} while(swatchCount <= 1);
 			
 			
+			var rgb = randomizer.createRandomColor();
+			
 			// Create our first gradient
 			swatch.createSwatch({
-				'color' : randomizer.createRandomColor(),
+				'rgb' : rgb,
+				'hex': swatch.rgbToHex(rgb),
 				'position' : randomizer.generateRandomPosition()
 			});
 			
@@ -404,8 +421,7 @@
 		
 	};
 	
-	$(document).ready(function () {
-		generator.init();
-	});
 	
-})();
+	generator.init();
+	
+});

@@ -14,6 +14,13 @@ if(typeof cssGradient === 'undefined') {
 */
 cssGradient.swatch = (function () {
 	
+	// Array Remove - By John Resig (MIT Licensed)
+	Array.prototype.remove = function(from, to) {
+	  var rest = this.slice((to || from) + 1 || this.length);
+	  this.length = from < 0 ? this.length + from : from;
+	  return this.push.apply(this, rest);
+	};
+	
 	// Hold our color swatch palette here
 	var palette = [];
 	
@@ -101,8 +108,12 @@ cssGradient.swatch = (function () {
 		} 
 		// If there is a previous swatch, let's progressively update this one
 		else if(lastSwatch) {
+			
+			var newRgb = getUpdatedHue(lastSwatch.rgb);
+			
 			var swatchConfig = {
-				color : getUpdatedHue(lastSwatch.color),
+				rgb : newRgb,
+				hex : rgbToHex(newRgb),
 				position : getNextPosition(lastSwatch.position)
 			};
 			
@@ -126,10 +137,17 @@ cssGradient.swatch = (function () {
 	* @param {Object} | Configuration parameters for the object (Color and position)
 	*/
 	var setupSwatch = function (element, config) {
-		var config = config || {
-			'color' : getColorTemplate(),
-			'position' : 0
-		};
+		var config = config || function() {
+			
+			var colors = getColorTemplate();
+			
+			return {
+				'rgb' : colors.rgb,
+				'hex' : colors.hex,
+				'position' : 0
+			}
+			
+		}();
 		
 		var $_thisSwatch = $('#' + element);
 		$_thisSwatch.click(swatchClick);
@@ -139,14 +157,15 @@ cssGradient.swatch = (function () {
 		
 		//Set up a new swatch object
 		palette.push({
-			'color' : config.color,
+			'rgb' : config.rgb,
+			'hex' : config.hex,
 			'id' : element,
 			'position' : config.position
 		});
 		
 		
 		//Set up the swatches color
-		$_thisSwatch.find('a').css('background-color', 'rgb(' + config.color.r + ',' + config.color.g + ',' + config.color.b + ')');
+		$_thisSwatch.find('a').css('background-color', 'rgb(' + config.rgb.r + ',' + config.rgb.g + ',' + config.rgb.b + ')');
 		
 		currentSwatch = palette.length-1;
 		
@@ -203,13 +222,16 @@ cssGradient.swatch = (function () {
 	/**
 	* Set the color of the current swatch
 	*
-	* @param {String} Color for swatch
+	* @param {String} RGB Color for swatch
+	* @param {String} HEX Color for swatch
 	*/
-	var setColor = function(color) {
-		var current = palette[currentSwatch]
-			current.color = color;
+	var setColor = function(rgb, hex) {
+		var current = palette[currentSwatch];
+			current.hex = hex;
+			current.rgb = rgb;
+			
 		
-		$('#' + current.id).find('a').css('background-color', 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')');
+		$('#' + current.id).find('a').css('background-color', hex);
 	};
 	
 	/**
@@ -258,12 +280,7 @@ cssGradient.swatch = (function () {
 	* based on color format
 	*/
 	var getColorTemplate = function () {
-		
-			{
-				'r' : 0,
-				'g' : 0,
-				'b' : 0
-			},
+
 	};
 	
 	/**
@@ -382,7 +399,17 @@ cssGradient.swatch = (function () {
 		var expires = "; expires=" + date.toGMTString();
 		
 		document.cookie = 'format=' + format + expires + "; path=/";
-	};		
+	};
+	
+	/**
+	* Takes an RGB object and converts it into a hex string
+	*
+	* @param {Object} RGB Colors
+	*/
+	var rgbToHex = function(rgb) {
+		var hex = rgb.b | (rgb.g << 8) | (rgb.r << 16);
+		return hex.toString(16);
+	};
 	
 	// Return the Public API for color swatches
 	return {
@@ -392,13 +419,14 @@ cssGradient.swatch = (function () {
 		'setColor' : setColor,
 		'createSwatch' : createSwatch,
 		'emptyPalette' : emptyPalette,
+		'rgbToHex' : rgbToHex,
 		
 		// Accessor methods
 		'getColorFormat' : function () { return colorFormat; },
 		'getCurrentSwatch' : function () { return currentSwatch; },
 		'getPalette' : function () { return palette; },
 		'getPaletteLength' : function () { return palette.length; },
-		'getSwatchColor' : function () { return palette[currentSwatch].color; }
+		'getSwatchColor' : function () { return palette[currentSwatch].rgb; }
 	};
 	
 })();
