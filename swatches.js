@@ -368,6 +368,9 @@ cssGradient.swatch = (function () {
 		
 		var data = cookie.split(';');
 		var _this, key, val;
+		
+		var whiteList = ['rgb', 'hex'];
+		
 		for (var i=0, len = data.length; i < len; i++) {
 			
 			_this = data[i].split('=');
@@ -385,24 +388,6 @@ cssGradient.swatch = (function () {
 				setCookie('rgb');
 			}
 			
-		}
-			
-		// Ensure that the cookie data was not tampered with	
-		if(data[0] !== 'format') return false;
-		var whiteList = ['rgb', 'hex'];
-		
-		var key = data[1];
-		delete data;
-		
-		if( whiteList.indexOf(key) !== -1) {
-			colorFormat = key;
-			
-			// Update the select menu as well
-			$('#color-format option[value=' + key + ']')[0].selected = true;
-			
-		}
-		else {
-			document.cookie = '';
 		}
 	};
 	
