@@ -134,8 +134,9 @@ $(function () {
 		* gradient string sample
 		*/
 		setGradient : function () {
+			
 			// Apply style for live sample
-			generator.sample.css('background', generator.generateWebkitGradient());
+			generator.sample[0].style.cssText = 'background: ' + generator.generateWebkitGradient();
 			generator.sample.css('background', generator.generateMozGradient());
 			
 			// Update string
@@ -192,7 +193,7 @@ $(function () {
 		*/
 		generateWebkitGradient : function () {
 			var gradientProps = generator.gradientProps,
-				gradientString = 'background: -webkit-gradient(' + gradientProps.type + ',' + generator.fetchGradientStart() + ',' + generator.fetchGradientEnd() + ',',
+				gradientString = '-webkit-gradient(' + gradientProps.type + ',' + generator.fetchGradientStart() + ',' + generator.fetchGradientEnd() + ',',
 				gradientData = '';
 			
 			var palette = swatch.getPalette(),
@@ -207,7 +208,6 @@ $(function () {
 			
 			gradientString = gradientString + gradientData;
 			gradientString = gradientString.substr(0, gradientString.length - 1) + ');';
-		
 			return gradientString;
 		},
 		
