@@ -17,6 +17,6 @@ http://www.eyecon.ro/colorpicker/
 Function Icon Set from:
 http://wefunction.com/2008/07/function-free-icon-set/
 
--- ToDo
+## ToDo
 * Radial gradient support
 * Bookmarkable gradients
