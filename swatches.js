@@ -383,11 +383,10 @@ cssGradient.swatch = (function () {
 					colorFormat = val;
 					$('#color-format option[value=' + val + ']')[0].selected = true;
 				}
+				else {
+					setCookie('rgb');
+				}
 			}
-			else {
-				setCookie('rgb');
-			}
-			
 		}
 	};
 	
