@@ -231,7 +231,7 @@ cssGradient.swatch = (function () {
 			current.rgb = rgb;
 			
 		
-		$('#' + current.id).find('a').css('background-color', hex);
+		$('#' + current.id).find('a').css('background-color', '#' + hex);
 	};
 	
 	/**
