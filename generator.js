@@ -136,8 +136,8 @@ $(function () {
 		setGradient : function () {
 			
 			// Apply style for live sample
-			generator.sample[0].style.cssText = 'background: ' + generator.generateWebkitGradient();
-			generator.sample.css('background', generator.generateMozGradient());
+			generator.sample[0].style.cssText = 'background-image: ' + generator.generateWebkitGradient();
+			generator.sample.css('background-image', generator.generateMozGradient());
 			
 			// Update string
 			generator.updateGradientString();
@@ -241,7 +241,7 @@ $(function () {
 
 			//Set up the general linear gradient properties
 			$(gString)
-				.append( generator.createProp('background: -webkit-gradient(', ''))
+				.append( generator.createProp('background-image: -webkit-gradient(', ''))
 				.append( generator.createProp(gProps.type, ',', true) )
 				.append( generator.createProp(generator.fetchGradientStart(), ',', true))
 				.append( generator.createProp(generator.fetchGradientEnd(), ',', true));
@@ -276,7 +276,7 @@ $(function () {
 			gProps.yStart === gProps.yEnd ? gPosition += 'center' : gPosition += gProps.yStart;
 			
 			$(gString)
-				.append( generator.createProp('background: -moz-' + gProps.type + '-gradient('), '', false)
+				.append( generator.createProp('background-image: -moz-' + gProps.type + '-gradient('), '', false)
 				.append( generator.createProp(gPosition, ',', true));
 			
 			for(var i=0; i<pLength; i++) {
