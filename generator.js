@@ -136,8 +136,9 @@ $(function () {
 		setGradient : function () {
 			
 			// Apply style for live sample
-			generator.sample[0].style.cssText = 'background-image: ' + generator.generateWebkitGradient();
-			generator.sample.css('background-image', generator.generateMozGradient());
+			generator.sample[0].style.cssText = 'background-image: ' + "-webkit-" + generator.generateGradient();
+			generator.sample.css('background-image', "-moz-" + generator.generateGradient());
+			generator.sample.css('background-image', "-o-" + generator.generateGradient());
 			
 			// Update string
 			generator.updateGradientString();
@@ -146,9 +147,9 @@ $(function () {
 		/**
 		* Factory to generate CSS code for Mozilla gradient support
 		*/
-		generateMozGradient : function () { 	
+		generateGradient : function () {
 			var gradientProps = generator.gradientProps,
-				gradientString = '-moz-' + gradientProps.type + '-gradient(',
+				gradientString = gradientProps.type + '-gradient(',
 				gradientData = '';
 				$sample = generator.sample,
 				gCount = swatch.getPaletteLength(),
