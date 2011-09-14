@@ -17,9 +17,11 @@
 */
 
 $(function () {
-  
+
   var swatch;
-  
+
+  var vendor_prefixes = ['-o-', '-moz-', '-webkit-', '-ms-', ''];
+
   var generator = {
     
     /**
@@ -136,12 +138,16 @@ $(function () {
     setGradient : function () {
 
       var linear_gradient = generator.generateLinearGradient();
+      var sample = generator.sample[0];
 
-      // Apply style for live sample
-      generator.sample[0].style.cssText = 'background-image: ' + "-webkit-" + linear_gradient;
-      generator.sample[0].style.cssText = 'background-image: ' + '-o-' + linear_gradient;
-      generator.sample.css('background-image', "-moz-" + linear_gradient);
+      var compiled_string = '';
+      for (var i = 0, len = vendor_prefixes.length; i < len; i++) {
+        compiled_string = compiled_string + 'background: ' + vendor_prefixes[i] + linear_gradient + ';';
+      }
       
+      compiled_string = compiled_string + 'background: ' + generator.generateWebkitGradient() + ';';
+      sample.style.cssText = compiled_string;
+
       // Update string
       generator.updateGradientString();
     },
@@ -159,30 +165,16 @@ $(function () {
         gCount = swatch.getPaletteLength(),
         palette = swatch.getPalette();
       
-      /*
-      * If only one color is in our pallete return the color for our sample since
-      * Firefox doesn't seem to like one color in a gradient string and won't replace
-      * the old string
-      */
-      if(gCount === 1) {
-        for(name in palette) {
-          var color = palette[name].rgb;
-          return 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')';
-        }
-      }     
-        
-      /**
-      * Since moz-gradient does not take end points in the gradient string we must format our gradient string
-      * differently. We must only set start points. Since for a webkit gradient direction left left would 
-      * create a linear gradient at the same position to the left, we instead must set the position to center
-      * when xStart and xEnd match
-      */
-      gradientProps.xStart === gradientProps.xEnd ? gradientString += 'center' : gradientString += gradientProps.xStart;
-      gradientString += ' ';
-      
-      gradientProps.yStart === gradientProps.yEnd ? gradientString += 'center' : gradientString += gradientProps.yStart;
-      gradientString += ',';
-      
+      if (gradientProps.xStart !== gradientProps.xEnd) {
+         gradientString = gradientString + gradientProps.xStart + ' ';
+      }
+
+      if (gradientProps.yStart !== gradientProps.yEnd) {
+        gradientString = gradientString + gradientProps.yStart + ' ';
+      }
+
+      gradientString = gradientString + ',';
+
       $.each(palette, function (index, obj) {
         gradientData = gradientData + 'rgb(' + obj.rgb.r + ',' + obj.rgb.g + ',' + obj.rgb.b + ')' + obj.position + '%,';
       });
@@ -191,12 +183,8 @@ $(function () {
       gradientString = gradientString.substr(0, gradientString.length - 1) + ')';
             
       return gradientString;
-
     },
-    
-    /**
-    * Factory to generate CSS code for Mozilla gradient support
-    */
+
     generateGradient : function () {
       var gradientProps = generator.gradientProps,
         gradientString = gradientProps.type + '-gradient(',
