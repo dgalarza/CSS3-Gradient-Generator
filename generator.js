@@ -71,7 +71,7 @@ $(function () {
         onChange : generator.retrieveColor,
       })
       .ColorPickerSetColor('#23adad')
-      .mouseup(generator.updateGradientString);
+      .mouseup(generator.updateCodeSample);
       
       // Setup the direction option event handlers
       
@@ -149,7 +149,61 @@ $(function () {
       sample.style.cssText = compiled_string;
 
       // Update string
-      generator.updateGradientString();
+      generator.updateCodeSample();
+    },
+
+    /**
+     * Update the code sample for the user
+     *
+     **/
+    updateCodeSample: function() {
+      var linear_gradient = generator.generateLinearGradient();
+      var $gradientString = generator.gradientString;
+
+      var prefix = 'background-image: ';
+      var gradientString = 'background-image:' + vendor_prefixes.join(linear_gradient + ";\n" + prefix);
+
+      gradientString = gradientString.slice(0, - (prefix.length + 1));
+
+      var gProps = generator.gradientProps;
+      gradientString = gradientString + "\n" + prefix + "-webkit-gradient(\n\t";
+      gradientString = gradientString + gProps.type + ",\n\t";
+      gradientString = gradientString + generator.fetchGradientStart() + ",\n\t";
+      gradientString = gradientString + generator.fetchGradientEnd() + ",\n\t";
+
+      var gradients = swatch.getPalette();
+      var pLength = swatch.getPaletteLength();
+      var getColor = generator.getColor;
+
+      var gradient, position;
+      for (var i = 0; i < pLength; i++) {
+
+        var delimiter = (i === pLength - 1) ? "\n" : ",\n\t";
+
+        gradient = gradients[i];
+        position = gradient.position / 100;
+
+        gradientString = gradientString + "color-stop(" + position + ", " + getColor(gradient) + ")" + delimiter;
+      }
+
+      gradientString = gradientString + ");";
+
+      $gradientString.html(gradientString);
+    },
+
+    getColor: function(obj) {
+      var colorFormat = swatch.getColorFormat();
+
+      var colorString;
+      if (colorFormat === 'hex') {
+        colorString = '#' + obj.hex.toUpperCase();
+      }
+      else {
+        var rgb = obj.rgb;
+        colorString = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
+      }
+
+      return colorString;
     },
 
     /**
@@ -226,7 +280,7 @@ $(function () {
             
       return gradientString;
     },
-    
+
     /**
     * Factory for generating Webkit gradient code
     */
@@ -265,71 +319,7 @@ $(function () {
       var gradientProps = generator.gradientProps;
       return gradientProps.xEnd + ' ' + gradientProps.yEnd;
     },
-    
-    /**
-    * Generates a webkit gradient string for the user
-    * and display it on the page so the user can then take their gradient string and use it
-    */
-    updateGradientString : function () {
-      var gString = generator.gradientString;
-      var gProps = generator.gradientProps;
-      var gradients = swatch.getPalette();
-      
-      //Clear the old gradient code
-      $(gString).html('');
 
-      //Set up the general linear gradient properties
-      $(gString)
-        .append( generator.createProp('background-image: -webkit-gradient(', ''))
-        .append( generator.createProp(gProps.type, ',', true) )
-        .append( generator.createProp(generator.fetchGradientStart(), ',', true))
-        .append( generator.createProp(generator.fetchGradientEnd(), ',', true));
-      
-      //Loop through each gradient color
-      var delimiter = ',',
-        pLength = swatch.getPaletteLength(),
-        position, gradient;
-      
-      var colorFormat = swatch.getColorFormat();
-      var color;
-      
-      
-      //rgb(' + gradient.rgb.r + ',' + gradient.rgb.g + ',' + gradient.rgb.b + '))'
-      for(var i=0; i<pLength; i++) {
-        (i === pLength - 1) ? delimiter = '' : ',';
-        gradient = gradients[i];
-        position = gradient.position / 100;
-        
-        color = (colorFormat === 'rgb') ? 'rgb(' + gradient.rgb.r + ',' + gradient.rgb.g + ',' + gradient.rgb.b + ')' : '#' + gradient.hex.toUpperCase();
-
-        $(gString).append( generator.createProp('color-stop(' + position + ', ' + color + ')', delimiter, true) );
-      }   
-
-      $(gString).append(generator.createProp(');', '', false));
-      
-      // Handle Moz String
-      var gPosition = '';
-      gProps.xStart === gProps.xEnd ? gPosition += 'center' : gPosition += gProps.xStart;
-      gPosition += ' ';
-      
-      gProps.yStart === gProps.yEnd ? gPosition += 'center' : gPosition += gProps.yStart;
-      
-      $(gString)
-        .append( generator.createProp('background-image: -moz-' + gProps.type + '-gradient('), '', false)
-        .append( generator.createProp(gPosition, ',', true));
-      
-      for(var i=0; i<pLength; i++) {
-        (i === pLength - 1) ? delimiter = '' : delimiter = ',';
-        gradient = gradients[i];
-        
-        color = (colorFormat === 'rgb') ? 'rgb(' + gradient.rgb.r + ',' + gradient.rgb.g + ',' + gradient.rgb.b + ')' : '#' + gradient.hex.toUpperCase();
-        
-        $(gString).append(generator.createProp(color + ' ' + gradient.position + '%', delimiter, true) );
-      }
-      
-      $(gString).append(generator.createProp(');', '', false));       
-    },
-    
     /**
     * Return a text node for our CSS code generation
     *
@@ -368,7 +358,7 @@ $(function () {
         
         generator.gradientProps[prop] = $(target).attr('value');
         generator.setGradient();
-        generator.updateGradientString();     
+        generator.updateCodeSample();
                 
       }else{
         //Use a custom value
@@ -395,7 +385,7 @@ $(function () {
       generator.gradientProps[prop] = $(target).attr('value');
       
       generator.setGradient();
-      generator.updateGradientString();
+      generator.updateCodeSample();
     }
     
   };
