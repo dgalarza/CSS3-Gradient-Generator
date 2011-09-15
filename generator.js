@@ -20,7 +20,7 @@ $(function () {
 
   var swatch;
 
-  var vendor_prefixes = ['-o-', '-moz-', '-webkit-', '-ms-', ''];
+  var vendor_prefixes = [' ', '-o-', '-moz-', '-webkit-', '-ms-', ' '];
 
   var generator = {
     
