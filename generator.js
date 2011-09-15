@@ -286,22 +286,6 @@ $(function () {
     },
 
     /**
-    * Return a text node for our CSS code generation
-    *
-    * @param {String} | Content for CSS prop definition
-    * @param {String} | (Optional) Property seperator
-    */
-    createProp : function(data, delimiter, separator) {
-      var delimiter = delimiter || '';
-      
-      if(separator) separator = '    ';
-      else separator = '';
-      
-      var span = document.createTextNode(separator + data + delimiter + "\n");
-      return $(span);
-    },
-    
-    /**
     * Gradient direction select change handler
     * Handles the Custom option as well as updates
     * the live sample and CSS once the user makes a change
